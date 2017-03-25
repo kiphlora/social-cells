@@ -5,7 +5,792 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>Social Cells</title>
 	<script src="js/cellular-automata-1d.js"></script>
+	<script src="js/d3/d3.min.js"></script>
+
+<style>
+	svg { 
+		border: 0px solid black; 
+	}
+
+	body, html {
+		font-size: 16px;
+		font-family: Helvetica;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	.container {
+		margin: 0;
+		width: 60%;
+		padding-left: 20%;
+		padding-right: 20%;
+	}
+
+	.header {
+		width: 100%;
+		background-color: #333;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.header p {
+		margin: 0;
+		color: white;
+		padding: 10px;
+	}
+
+	.main-title {
+		font-weight: bold;
+		font-size: 2em;
+	}
+
+	.main-subtitle, .authors {
+		font-weight: normal;
+		font-size: 1.25em;
+	}
+
+</style>
 </head>
 <body>
+
+	<div class="header">
+		<p class="main-title">Social Cells</p>
+		<p class="main-subtitle">An Introduction to Cellular Automata</p>
+		<p class="authors">by Brett Moran</p>
+	</div>
+	<div class="container">
+		<div>
+			<p>
+				These adorable creatures are cells. They are a type of artificial life. They live their lives chatting away in their social circles, making decisions based on how they and their friends feel at the moment.
+			</p>
+			<p>Poke (click/tap!) one to view its local network...</p>
+		</div>
+		
+		<div>
+			<svg id="explore-simple-network"></svg>
+		</div>
+		
+		<div>
+			<p>Each cell spends its time either awake or asleep...</p>
+			<svg id="awake-asleep-intro"></svg>
+		</div>
+
+		<div>
+			<p>Furthermore, each cell reacts to different social situations in exactly the same way.</p>
+			<p>
+				In the cells' simple universe, the number of possible social situations is only eight! (Green = Awake, Gray = Asleep)...
+			</p>
+		</div>
+
+		<div>
+			<svg id="social-situations-list"></svg>
+		</div>
+
+		<div>
+			<p>In each social situation, each cell decides whether it will wake up or fall asleep.</p>
+			<p>The interesting and fun part: You decide the Rules for each situation!</p>
+			<p>Let's look at the rule 11011110...</p>
+		</div>
+
+		<div>
+			<svg id="rule-222-closer-to-wolfram-view"></svg>
+		</div>
+
+		<div>
+			<p>
+				In order to see the cells talk, we need to start time for them. Each second, each cell will decide which state to be in based on the current social situation it finds itself in and Rule 222.
+			</p>
+		</div>
+	
+		<div>
+			<svg id="run-circular-network-over-time"></svg>
+		</div>
+
+		<div>
+			<p>It's difficult to see what's happening. Let's do three things:</p>
+			<ol>
+				<li>Flatten our cells into a row. Note that the far left and far right cells still talk to each other.</li>
+				<li>Each row will show the states of the cells at a specific time.</li>
+				<li>Make each cell sleep, except for the center one, which we'll keep awake.</li>
+				<!-- 3. can be relaxed later, but doing this now makes the patterns more consistent -->
+			</ol>
+		</div>
+
+		<div>
+			<!-- Annotate to demonstrate to the user that the rows will map to time (which is in sec), or just be clear -->
+			<!-- In essence, we're taking a snapshot over 1 sec intervals and displaying them in a column -->
+			<svg id="show-prev-and-current-cell-states-over-time"></svg>
+		</div>
+
+		<div>
+			<p>Interesting! This rule creates a triangular pattern over time.</p> 
+			<p>Try a few more rules to see what you can find...</p>
+		</div>
+
+		<div>
+			<svg id="center-focused-eca-with-customizable-rules"></svg>
+		</div>
+
+		<div>
+			<p>Stephan Wolfram, who studied the topic of Celluar Automata (CA) - which is what these creatures are - discovered four classes of patterns:</p>
+			<p>  Class 1: These CA quickly converge to a uniform state (either all fall asleep, or all awaken quickly).</p>
+			<p>  Class 2: These CA quickly converge to a repetitive/oscillatory or stable state.</p>
+			<p>  Class 3: These CA appear to always be in a random state.</p>
+			<p>  Class 4: These CA form areas of repetitive or stable states, but also form structures that interact in complex ways.</p>
+
+			<p>Some rules are difficult to classify, but most clearly fall into one (or more) of these classes.</p>
+			<p>Here are all 256 possible rules for our center-focused, awake/asleep, 8 social situation CA...</p>
+		</div>
+
+		<div>
+			<canvas id="all-256-rules"></canvas>
+		</div>
+
+		<div>
+			<p>Cellular Automata are very simple, but can be made considerably more complex even my just adding another state, or by extending the local network of friends a cell can talk to.</p>
+			<p>Here's a lovely little sandbox where you can tweak many of the things we spoke about... Enjoy!</p>
+		</div>
+
+		<div>
+			<!-- Make annotations to explain how the state spaces are incredibly large, even after merely increasing the number of states by one! And, they are even larger if the number of friends increases by 2! As such, a randomize rule button exists to help explore the mind-bogglingly large space of possible rules. -->
+			<!-- Incorporate random initial conditions and center-focused initial conditions. -->
+			<!-- Allow the user to change the color, as well, have 5-8 presets, and a color wheel option. -->
+			<!-- Allow the user to change the number of cells to run with (with min and max values). -->
+			<!-- Allow the user to choose between 2 and 3 states. -->
+			<!-- Allow the user to choose between 3 and 5 neighbors. -->
+			<!-- Do not allow/force the user to input specific binary/tertiary components for anything beyond the simple CA(1,2) simulation - CA(1,2) means CA with radius 1 (ie 1 to the left, 1 to the right, and the cell itself) and 2 possible states for each cell to choose from. -->
+			<svg id="ca-sandbox"></svg>
+		</div>
+
+		<div id="footer">
+			<p>Thanks so much for checking this out! Please send any feedback to bam@kiphlora.com</p>
+			<p>I would like to thank Nicky Case for inspiring me with own her incredible explorable explanations, as well as Bret Victor for his numerous talks and demonstrations of them.</p>
+			<p>I would also like to thank those who helped me make this into something great through lots of feedback and testing.</p>
+			<p>References:</p>
+			<ul>
+				<li>Nicky Case's Parable of Polygons</li>
+				<li>Bret Victor's .....</li>
+				<!-- ... and many more people, inspirations, etc. ... -->
+			</ul>
+		</div>
+
+	</div>
+
+	<script>
+			var exploreSimpleSVG = d3.select("#explore-simple-network");
+			var awakeasleepintroSVG = d3.select("#awake-asleep-intro");
+			var all256RulesSVG = d3.select("#all-256-rules");
+			var circularNetworkSVG = d3.select("#run-circular-network-over-time");
+			var allCellStatesSVG = d3.select("#show-prev-and-current-cell-states-over-time");
+			var socialSituationsSVG = d3.select("#social-situations-list");
+
+
+
+			var stateColors = [ "#cccccc", "#28a328" ];
+			var fillColors = [ "#dedede", "#48c448" ];
+
+			var images = [ "img/asleep-cell.svg", "img/awake-cell.svg" ];
+
+
+			d3.selectAll("svg")
+					.attr("width", window.innerWidth * 0.6)
+					.attr("height", 700);
+
+			
+					//.run(500);
+
+			// var cs = ca.cellStates();
+			var i = 0;
+			// var cellGroup;
+
+			// setupExploreSimpleNetwork(exploreSimpleSVG);
+			setupAwakeAsleepIntro(awakeasleepintroSVG);
+			// setupCircularNetwork(circularNetworkSVG);
+			// setupAllCellStatesViz(allCellStatesSVG);
+			setupSocialSituations(socialSituationsSVG);
+
+
+			function setupExploreSimpleNetwork(svg) {
+				var ca = CA(1,2)
+						.numCells(7)
+						.rule(0)
+						// .run();
+
+				var curTime = Date.now();
+				var prevTime = Date.now();
+				var eTime = 0;
+				var delay = 1000;
+				var i = 0;
+				var reset = false;
+				var center = { x: window.innerWidth * 0.6 / 2, y: 300 };
+				var radius = 250;
+				var size = 60;
+				var angle = 2 * Math.PI / ca.numCells();
+				var angleoffset = Math.PI/2;
+
+				var cellLocs = [];
+				for (var i=0; i<ca.numCells(); i++) {
+					cellLocs[i] = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
+													y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
+				}
+
+				for (var i=0; i<ca.numCells(); i++) {
+					var x1, x2, y1, y2;
+
+					x1 = cellLocs[i].x + size/2;
+					y1 = cellLocs[i].y + size/2;
+					x2 = cellLocs[mod(i+1, cellLocs.length)].x + size/2;
+					y2 = cellLocs[mod(i+1, cellLocs.length)].y + size/2;
+
+					svg.append("line")
+							.attr("class", "sn-line")
+							.attr("x1", x1)
+							.attr("y1", y1)
+							.attr("x2", x2)
+							.attr("y2", y2)
+							.attr("stroke", "#fff")
+							.attr("stroke-width", 5);
+				}
+
+				var cellGroup = svg.append("g").selectAll(".cn-cells").data(ca.currentCellStates())
+						.enter().append("g");
+				cellGroup.each(function(d,i){
+					var me = d3.select(this);
+					// var numCells = ca.numCells();
+					var loc = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
+											y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
+
+					var c = me.append("rect")
+							.attr("class", "cn-cells cn-cell"+i)
+							.attr("x", loc.x)
+							.attr("y", loc.y)
+							.attr("rx", size / 10)
+							.attr("width", size)
+							.attr("height", size)
+							.attr("stroke", stateColors[d])
+							.attr("stroke-width", size / 10)
+							.attr("fill", Color(fillColors[d]).a(1).rgbaString())
+						.on("mouseover", function(){
+							// happy face; chatting face
+							// text bubble, saying hi to neighbors
+
+
+							var lines = d3.selectAll(".sn-line");
+							lines.attr("stroke", "#fff");
+							lines.filter(function(a,b){ return (b === i) || (b === mod(i-1, cellLocs.length)); })
+									.attr("stroke", "#ddd");
+
+						});
+
+					me.select(".face").remove();
+					if (d === 0) drawSleepyFace(me, size, loc);
+					else drawAwakeFace(me, size, loc);
+
+							
+				});
+			}
+
+			function setupAwakeAsleepIntro(svg) {
+				var center = { x: window.innerWidth * 0.6 / 2, y: 350 };
+				var size = 120;
+
+				svg.append("line")
+						.attr("x1", center.x)
+						.attr("y1", 100)
+						.attr("x2", center.x)
+						.attr("y2", 600)
+						.attr("stroke", "#333");
+
+				var awakeLoc = { x: center.x / 2 - size/2, y: center.y - size/2 };
+				svg.append("svg:image")
+				   .attr('x', awakeLoc.x)
+				   .attr('y', awakeLoc.y)
+				   .attr('width', size)
+				   .attr('height', size)
+				   .attr("xlink:href","/Kiphlora/img/awake-cell.svg")
+
+				
+				// var sleepCell = svg.append("g");
+				// sleepCell.append("rect")
+				// 		.attr("x", sleepLoc.x)
+				// 		.attr("y", sleepLoc.y)
+				// 		.attr("rx", size / 10)
+				// 		.attr("width", size)
+				// 		.attr("height", size)
+				// 		.attr("stroke", stateColors[0])
+				// 		.attr("stroke-width", size / 10)
+				// 		.attr("fill", Color(stateColors[0]).a(0.5).rgbaString());
+
+				// sleepCell.select(".face").remove();
+				// drawSleepyFace(sleepCell, size, sleepLoc);
+				
+
+				var sleepLoc = { x: 3 * center.x / 2 - size/2, y: center.y - size/2 };
+				svg.append("svg:image")
+				   .attr('x', sleepLoc.x)
+				   .attr('y', sleepLoc.y)
+				   .attr('width', size)
+				   .attr('height', size)
+				   .attr("xlink:href","/Kiphlora/img/asleep-cell.svg")
+
+				// var awakeCell = svg.append("g");
+				// awakeCell.append("rect")
+				// 		.attr("x", awakeLoc.x)
+				// 		.attr("y", awakeLoc.y)
+				// 		.attr("rx", size / 10)
+				// 		.attr("width", size)
+				// 		.attr("height", size)
+				// 		.attr("stroke", stateColors[1])
+				// 		.attr("stroke-width", size / 10)
+				// 		.attr("fill", Color(stateColors[1]).a(0.5).rgbaString());
+						
+				// awakeCell.select(".face").remove();
+				// drawAwakeFace(awakeCell, size, awakeLoc);
+
+			}
+
+			function setupCircularNetwork(svg) {
+
+				var ca = CA(1,2)
+						.numCells(41)
+						.rule(222);
+
+				var curTime = Date.now();
+				var prevTime = Date.now();
+				var eTime = 0;
+				var delay = 1000;
+				var i = 0;
+				var reset = false;
+				var center = { x: window.innerWidth * 0.6 / 2, y: 350 };
+				var radius = 310;
+				var size = 33;
+				var angle = 2 * Math.PI / ca.numCells();
+				var angleoffset = Math.PI/1.91;
+
+				var runAndRules = svg.append("g");
+				var runRect = runAndRules.append("rect")
+						.attr({ x: center.x - 60, y: center.y - 30, rx: 10, width: 100, height: 40, fill: "#333333" })
+						.on("click", function(){
+							if (reset) {
+								ca.reset();
+								i = 0;
+								counterText.text("t = 0");
+								runtext.text("Run");
+								reset = false;
+								cellGroup.data(ca.currentCellStates()).each(function(a,b){
+									var me = d3.select(this);
+									// var numCells = ca.numCells();
+									var loc = { x: radius * Math.cos(b * angle + angleoffset) + center.x - 25,
+															y: radius * Math.sin(b * angle + angleoffset) + center.y - 25 };
+
+									var c = me.selectAll("rect")
+											.attr("class", "cn-cells cn-cell"+i)
+											.attr("x", loc.x)
+											.attr("y", loc.y)
+											.attr("rx", size / 10)
+											.attr("width", size)
+											.attr("height", size)
+											.attr("stroke", stateColors[a])
+											.attr("stroke-width", size / 10)
+											.attr("fill", Color(stateColors[a]).a(0.5).rgbaString());
+
+									me.select(".face").remove();
+									if (a === 0) drawSleepyFace(me, size, loc);
+									else drawAwakeFace(me, size, loc);
+								})
+							}
+							else {
+								d3.select(this).classed("running", !d3.select(this).classed("running"));
+								if (!d3.select(this).classed("running")) { runtext.text("Run"); window.cancelAnimationFrame(raf); }
+								else { runtext.text("Stop"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
+							}
+						});
+				var runtext = runAndRules.append("text").attr({ "text-anchor": "middle", x: window.innerWidth * 0.6/2-10, y: 347, fill: "#ffffff" }).text("Run").style("pointer-events", "none");
+
+				// runAndRules.append("rect").attr({ x: 300, y: 270, rx: 10, width: 200, height: 40, fill: "#333333" })
+				// 		.on("click", function() {
+				// 			ca.reset();
+				// 			i = 0;
+				// 			if (cellGroup !== undefined) cellGroup.removeVisual();
+				// 			ca.randomRule();
+				// 			// cellGroup = AnthroCell(ca.currentCellStates()).size(5);
+				// 			ruletext.text("Random Rule: " + ca.rule());
+				// 			counterText.text("t = " + i);
+				// 		});
+				// var ruletext = runAndRules.append("text").attr({ "text-anchor": "middle", x: 400, y: 295, fill: "#ffffff" }).text("Random Rule: " + ca.rule()).style("pointer-events", "none");
+
+				var counterText = runAndRules.append("text").attr({ "font-weight": "bold", "text-anchor": "middle", x: window.innerWidth * 0.6/2-10, y: 245, fill: "#333" }).text("t = " + i).style("pointer-events", "none");
+
+				var raf;// = window.requestAnimationFrame(run);
+
+				
+
+				function run(t) {		
+
+					curTime = Date.now();	
+					eTime += curTime - prevTime;
+					prevTime = curTime;
+					console.log(eTime);
+
+					if (eTime >= delay) {
+						eTime = 0;
+						if (i === 20) { 
+							runtext.text("Reset"); 
+							window.cancelAnimationFrame(raf);
+							reset = true;
+							runRect.classed("running", false);
+							return; 
+						}
+					
+						ca.run();
+						i++;
+						cellGroup.data(ca.currentCellStates()).each(function(a,b){
+							var me = d3.select(this);
+							// var numCells = ca.numCells();
+							var loc = { x: radius * Math.cos(b * angle + angleoffset) + center.x - 25,
+													y: radius * Math.sin(b * angle + angleoffset) + center.y - 25 };
+
+							var c = me.selectAll("rect")
+									.attr("class", "cn-cells cn-cell"+i)
+									.attr("x", loc.x)
+									.attr("y", loc.y)
+									.attr("rx", size / 10)
+									.attr("width", size)
+									.attr("height", size)
+									.attr("stroke", stateColors[a])
+									.attr("stroke-width", size / 10)
+									.attr("fill", Color(stateColors[a]).a(0.5).rgbaString());
+
+							me.select(".face").remove();
+							if (a === 0) drawSleepyFace(me, size, loc);
+							else drawAwakeFace(me, size, loc);
+						})
+						counterText.text("t = " + i);
+					}
+					raf = window.requestAnimationFrame(run);
+				}
+
+				var cellGroup = svg.append("g").selectAll(".cn-cells").data(ca.currentCellStates())
+						.enter().append("g");
+				cellGroup.each(function(d,i){
+					var me = d3.select(this);
+					// var numCells = ca.numCells();
+					var loc = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
+											y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
+
+					var c = me.append("rect")
+							.attr("class", "cn-cells cn-cell"+i)
+							.attr("x", loc.x)
+							.attr("y", loc.y)
+							.attr("rx", size / 10)
+							.attr("width", size)
+							.attr("height", size)
+							.attr("stroke", stateColors[d])
+							.attr("stroke-width", size / 10)
+							.attr("fill", Color(stateColors[d]).a(0.5).rgbaString());
+
+					
+				});
+			}
+
+			function setupAllCellStatesViz(svg) {
+				var runs = 20;
+
+				var ca = CA(1,2)
+						.numCells(41)
+						.rule(222)
+						.run(runs);
+
+				var allcellstates = ca.cellStatesStr();
+				var cellGroup = [];
+				for (var k=0; k<allcellstates.length; k++) {
+					cellGroup[k] = svg.append("g").attr("class", "as-cell-group" + k);
+				}
+
+				var curTime = Date.now();
+				var prevTime = Date.now();
+				var eTime = 0;
+				var delay = 1000;
+				var i = 0;
+				var reset = false;
+
+				var width = window.innerWidth * 0.6;
+				var height = 500;
+				var numCells = ca.numCells();
+				var size = 15;
+				var padding = size * 0.2;
+				var start = 35;
+
+
+				var runAndRules = svg.append("g");
+				var runRect = runAndRules.append("rect")
+						.attr({ x: 5, y: 5, rx: 10, width: 100, height: 40, fill: "#333333" })
+						.on("click", function(){
+							if (reset) {
+								ca.reset();
+								i = 0;
+								counterText.text("t = 0");
+								runtext.text("Run");
+								reset = false;
+
+								for (var k=0; k<allcellstates.length; k++) {
+									cellGroup[k].selectAll("rect").remove();
+								}
+
+								cellGroup[0].selectAll("rect").data(allcellstates[0]).enter().append("rect").each(function(a,b){
+									var me = d3.select(this);
+									var loc = { x: b * (size + padding) + start,
+														  y: 70 + i * (size + padding) };
+
+									me.attr("class", "cn-cells cn-cell"+i)
+										.attr("width", size)
+										.attr("height", size)
+										.attr("stroke", stateColors[a])
+										.attr("stroke-width", size / 10)
+										.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
+									// .transition().duration(900)
+										.attr("x", loc.x)
+										.attr("y", loc.y);
+								});
+
+								counterText.each(function(a,b){
+										d3.select(this)
+											.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 50, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
+											.attr("font-size", "16px")
+											.text("t = " + b)
+											.style("pointer-events", "none")
+
+									})
+
+
+							}
+							else {
+								d3.select(this).classed("running", !d3.select(this).classed("running"));
+								if (!d3.select(this).classed("running")) { runtext.text("Run"); window.cancelAnimationFrame(raf); }
+								else { runtext.text("Stop"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
+							}
+						});
+				var runtext = runAndRules.append("text").attr({ "text-anchor": "middle", x: 55, y: 30, fill: "#ffffff" }).text("Run").style("pointer-events", "none");
+
+				
+				var counterText = runAndRules.selectAll(".countertext").data(allcellstates)
+					.enter().append("text").each(function(a,b){
+						d3.select(this)
+							.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 65, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
+							.attr("font-size", "16px")
+							.text("t = " + b)
+							.style("pointer-events", "none");
+					})
+						
+
+				var raf;// = window.requestAnimationFrame(run);
+
+				function run(t) {		
+
+					curTime = Date.now();	
+					eTime += curTime - prevTime;
+					prevTime = curTime;
+					console.log(eTime);
+
+					if (eTime >= delay) {
+						eTime = 0;
+						if (i === runs) { 
+							runtext.text("Reset"); 
+							window.cancelAnimationFrame(raf);
+							reset = true;
+							runRect.classed("running", false);
+							return; 
+						}
+					
+						ca.run();
+						i++;
+						cellGroup[i].selectAll("rect").data(allcellstates[i]).enter().append("rect").each(function(a,b){
+							var me = d3.select(this);
+							var loc = { x: b * (size + padding) + start,
+												  y: 70 + i * (size + padding) };
+
+							me.attr("class", "cn-cells cn-cell"+i)
+								.attr("width", size)
+								.attr("height", size)
+								.attr("stroke", stateColors[a])
+								.attr("stroke-width", size / 10)
+								.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
+							// .transition().duration(900)
+								.attr("x", loc.x)
+								.attr("y", loc.y);
+						});
+						counterText.filter(function(a,b){ return b === i; }).attr("fill", "#333");
+					}
+					raf = window.requestAnimationFrame(run);
+				}
+
+				cellGroup[0].selectAll("rect").data(allcellstates[0]).enter().append("rect").each(function(a,b){
+					var me = d3.select(this);
+					var loc = { x: b * (size + padding) + start,
+										  y: 70 + i * (size + padding) };
+
+					me.attr("class", "cn-cells cn-cell"+i)
+						.attr("width", size)
+						.attr("height", size)
+						.attr("stroke", stateColors[a])
+						.attr("stroke-width", size / 10)
+						.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
+					// .transition().duration(900)
+						.attr("x", loc.x)
+						.attr("y", loc.y);
+				});
+			}
+
+			function setupSocialSituations(svg) {
+				var configs = [ [0,0,0],
+												[0,0,1],
+												[0,1,0],
+												[0,1,1],
+												[1,0,0],
+												[1,0,1],
+												[1,1,0],
+												[1,1,1] ];
+
+
+				var width = window.innerWidth * 0.6;
+				var size = 50;
+
+				var socsits = [];
+				for (var i=0; i<configs.length; i++) {
+					svg.append("text")
+							.attr("x", 15)
+							.attr("y", 95 + (size * 1.4 * i))
+							.attr("text-align", "middle")
+							.attr("text-anchor", "middle")
+							.text(function(a,b){ return (i+1) + ". "; });
+
+					socsits[i] = svg.append("g").selectAll(".ss-cell").data(configs[i])
+						.enter().append("svg:image")
+							.attr("x", function(a,b){ return 35 + (size * 1.2 * b); })
+							.attr("y", function(a,b){ return 60 + (size * 1.4 * i); })
+							.attr('width', size)
+							.attr('height', size)
+							.attr("xlink:href", function(a,b){ return images[a]; });
+							
+
+					svg.append("svg:image")
+							.attr("x", 400)
+							.attr("y", 60 + (size * 1.4 * i))
+					    .attr('width', size)
+					    .attr('height', size)
+					    .attr("xlink:href", images[0])
+					    .classed("sleeping", true)
+					  .on("click", function(){
+					  	var me = d3.select(this);
+					  	me.classed("sleeping", !me.classed("sleeping"));
+
+					  	if (me.classed("sleeping")) me.attr("xlink:href", images[0]);
+					  	else me.attr("xlink:href", images[1]);
+					  })
+
+					svg.append("path")
+				}
+			}
+
+			function drawSleepyFace(g, size, loc) {
+				var face = g.append("g").attr("class", "face");
+
+				var mypath = d3.svg.line()
+	          .x(function(d) { return loc.x + d.x; })
+	          .y(function(d) { return loc.y + d.y; })
+	          .interpolate("basis");
+
+	      var lefteyepts = [ { x: 0.8 * size/3, y: size/2.3 },
+	      									 { x: 0.8 * size/3, y: size/1.9 },
+	      									 { x: 1.2 * size/3, y: size/1.9 },
+	      									 { x: 1.2 * size/3, y: size/2.3 } ];
+
+				face.append("path").attr("class", "left-eye")
+						.attr("d", mypath(lefteyepts))
+						.attr("stroke", "#444")
+						.attr("stroke-width", 2)
+						.attr("fill", "transparent");
+
+				var righteyepts = [ { x: 1.8 * size/3, y: size/2.3 },
+													 { x: 1.8 * size/3, y: size/1.9 },
+													 { x: 2.2 * size/3, y: size/1.9 },
+													 { x: 2.2 * size/3, y: size/2.3 } ];
+
+				face.append("path").attr("class", "left-eye")
+						.attr("d", mypath(righteyepts))
+						.attr("stroke", "#444")
+						.attr("stroke-width", 2)
+						.attr("fill", "transparent");
+				
+
+
+				var points = [ { x: 1.1 * size/3, y: size/1.5 }, 
+											 { x: 1.2 * size/3, y: size/1.4 },
+											 { x: 1.8 * size/3, y: size/1.4 },
+											 { x: 1.9*size/3, y: size/1.5 } ];
+				
+
+				face.append("path").attr("class", "mouth")
+						.attr("d", mypath(points))
+						.attr("stroke", "#444")
+						.attr("stroke-width", 2)
+						.attr("fill", "transparent");
+
+				face.append("text")
+						.attr("x", loc.x + size - 4)
+						.attr("y", loc.y + 7)
+						.text("z")
+						.attr("font-size", size/4.5 + "px")
+						.attr("fill", Color("#000").a(0.5).rgbaString());
+
+				face.append("text")
+						.attr("x", loc.x + size + 3)
+						.attr("y", loc.y)
+						.text("z")
+						.attr("font-size", size/4 + "px")
+						.attr("fill", Color("#000").a(0.4).rgbaString());
+
+				face.append("text")
+						.attr("x", loc.x + size + 6)
+						.attr("y", loc.y + - 10)
+						.text("z")
+						.attr("font-size", size/3.5 + "px")
+						.attr("fill", Color("#000").a(0.3).rgbaString());
+			}
+
+			function drawAwakeFace(g, size, loc) {
+				var face = g.append("g").attr("class", "face");
+				face.append("circle").attr("class", "left-eye")
+						.attr("cx", loc.x + size/3)
+						.attr("cy", loc.y + size/2)
+						.attr("r", size/20)
+						.attr("fill", "#444");
+
+				face.append("circle").attr("class", "right-eye")
+						.attr("cx", loc.x + 2*size/3)
+						.attr("cy", loc.y + size/2)
+						.attr("r", size/20)
+						.attr("fill", "#444");
+
+
+				var points = [{ x: size/3, y: size/1.5 }, 
+											{ x: 1.1 * size/3, y: size/1.2 },
+											{ x: 1.9 * size/3, y: size/1.2 },
+											{ x: 2*size/3, y: size/1.5 }];
+				var mypath = d3.svg.line()
+	          .x(function(d) { return loc.x + d.x; })
+	          .y(function(d) { return loc.y + d.y; })
+	          .interpolate("basis");
+
+				face.append("path").attr("class", "mouth")
+						.attr("d", mypath(points))
+						.attr("fill", "#444");
+			}
+			
+</script>
+	
 </body>
 </html>
