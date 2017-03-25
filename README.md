@@ -1,2 +1,2 @@
 # social-cells
-introduction to cellular automata
+explorable explanation-style introduction to cellular automata
