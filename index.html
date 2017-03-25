@@ -206,7 +206,7 @@
 			var i = 0;
 			// var cellGroup;
 
-			// setupExploreSimpleNetwork(exploreSimpleSVG);
+			setupExploreSimpleNetwork(exploreSimpleSVG);
 			setupAwakeAsleepIntro(awakeasleepintroSVG);
 			// setupCircularNetwork(circularNetworkSVG);
 			// setupAllCellStatesViz(allCellStatesSVG);
@@ -214,27 +214,26 @@
 
 
 			function setupExploreSimpleNetwork(svg) {
+				var width = 900;
+				var height = 500;
+				svg.attr("width", width).attr("height", height);
+
 				var ca = CA(1,2)
 						.numCells(7)
 						.rule(0)
+						.randomizeStates();
 						// .run();
 
-				var curTime = Date.now();
-				var prevTime = Date.now();
-				var eTime = 0;
-				var delay = 1000;
-				var i = 0;
-				var reset = false;
-				var center = { x: window.innerWidth * 0.6 / 2, y: 300 };
-				var radius = 250;
+				var center = { x: width / 2, y: height / 2 };
+				var radius = 150;
 				var size = 60;
 				var angle = 2 * Math.PI / ca.numCells();
 				var angleoffset = Math.PI/2;
 
 				var cellLocs = [];
 				for (var i=0; i<ca.numCells(); i++) {
-					cellLocs[i] = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
-													y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
+					cellLocs[i] = { x: radius * Math.cos(i * angle + angleoffset) + center.x - size/2,
+													y: radius * Math.sin(i * angle + angleoffset) + center.y - size/2 };
 				}
 
 				for (var i=0; i<ca.numCells(); i++) {
@@ -260,23 +259,18 @@
 				cellGroup.each(function(d,i){
 					var me = d3.select(this);
 					// var numCells = ca.numCells();
-					var loc = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
-											y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
-
-					var c = me.append("rect")
+					var loc = cellLocs[i];
+					
+					var c = me.append("svg:image")
 							.attr("class", "cn-cells cn-cell"+i)
 							.attr("x", loc.x)
 							.attr("y", loc.y)
-							.attr("rx", size / 10)
 							.attr("width", size)
 							.attr("height", size)
-							.attr("stroke", stateColors[d])
-							.attr("stroke-width", size / 10)
-							.attr("fill", Color(fillColors[d]).a(1).rgbaString())
+							.attr("xlink:href", images[d])
 						.on("mouseover", function(){
 							// happy face; chatting face
 							// text bubble, saying hi to neighbors
-
 
 							var lines = d3.selectAll(".sn-line");
 							lines.attr("stroke", "#fff");
@@ -285,9 +279,9 @@
 
 						});
 
-					me.select(".face").remove();
-					if (d === 0) drawSleepyFace(me, size, loc);
-					else drawAwakeFace(me, size, loc);
+					// me.select(".face").remove();
+					// if (d === 0) drawSleepyFace(me, size, loc);
+					// else drawAwakeFace(me, size, loc);
 
 							
 				});
