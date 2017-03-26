@@ -208,7 +208,7 @@
 
 			setupExploreSimpleNetwork(exploreSimpleSVG);
 			setupAwakeAsleepIntro(awakeasleepintroSVG);
-			// setupCircularNetwork(circularNetworkSVG);
+			setupCircularNetwork(circularNetworkSVG);
 			// setupAllCellStatesViz(allCellStatesSVG);
 			setupSocialSituations(socialSituationsSVG);
 
@@ -374,27 +374,7 @@
 								counterText.text("t = 0");
 								runtext.text("Run");
 								reset = false;
-								cellGroup.data(ca.currentCellStates()).each(function(a,b){
-									var me = d3.select(this);
-									// var numCells = ca.numCells();
-									var loc = { x: radius * Math.cos(b * angle + angleoffset) + center.x - 25,
-															y: radius * Math.sin(b * angle + angleoffset) + center.y - 25 };
-
-									var c = me.selectAll("rect")
-											.attr("class", "cn-cells cn-cell"+i)
-											.attr("x", loc.x)
-											.attr("y", loc.y)
-											.attr("rx", size / 10)
-											.attr("width", size)
-											.attr("height", size)
-											.attr("stroke", stateColors[a])
-											.attr("stroke-width", size / 10)
-											.attr("fill", Color(stateColors[a]).a(0.5).rgbaString());
-
-									me.select(".face").remove();
-									if (a === 0) drawSleepyFace(me, size, loc);
-									else drawAwakeFace(me, size, loc);
-								})
+								cells.data(ca.currentCellStates()).attr("xlink:href", function(d,i){ return images[d]; });
 							}
 							else {
 								d3.select(this).classed("running", !d3.select(this).classed("running"));
@@ -403,18 +383,6 @@
 							}
 						});
 				var runtext = runAndRules.append("text").attr({ "text-anchor": "middle", x: window.innerWidth * 0.6/2-10, y: 347, fill: "#ffffff" }).text("Run").style("pointer-events", "none");
-
-				// runAndRules.append("rect").attr({ x: 300, y: 270, rx: 10, width: 200, height: 40, fill: "#333333" })
-				// 		.on("click", function() {
-				// 			ca.reset();
-				// 			i = 0;
-				// 			if (cellGroup !== undefined) cellGroup.removeVisual();
-				// 			ca.randomRule();
-				// 			// cellGroup = AnthroCell(ca.currentCellStates()).size(5);
-				// 			ruletext.text("Random Rule: " + ca.rule());
-				// 			counterText.text("t = " + i);
-				// 		});
-				// var ruletext = runAndRules.append("text").attr({ "text-anchor": "middle", x: 400, y: 295, fill: "#ffffff" }).text("Random Rule: " + ca.rule()).style("pointer-events", "none");
 
 				var counterText = runAndRules.append("text").attr({ "font-weight": "bold", "text-anchor": "middle", x: window.innerWidth * 0.6/2-10, y: 245, fill: "#333" }).text("t = " + i).style("pointer-events", "none");
 
@@ -441,53 +409,24 @@
 					
 						ca.run();
 						i++;
-						cellGroup.data(ca.currentCellStates()).each(function(a,b){
-							var me = d3.select(this);
-							// var numCells = ca.numCells();
-							var loc = { x: radius * Math.cos(b * angle + angleoffset) + center.x - 25,
-													y: radius * Math.sin(b * angle + angleoffset) + center.y - 25 };
 
-							var c = me.selectAll("rect")
-									.attr("class", "cn-cells cn-cell"+i)
-									.attr("x", loc.x)
-									.attr("y", loc.y)
-									.attr("rx", size / 10)
-									.attr("width", size)
-									.attr("height", size)
-									.attr("stroke", stateColors[a])
-									.attr("stroke-width", size / 10)
-									.attr("fill", Color(stateColors[a]).a(0.5).rgbaString());
+						cells.data(ca.currentCellStates()).attr("xlink:href", function(d,i){ return images[d]; });
 
-							me.select(".face").remove();
-							if (a === 0) drawSleepyFace(me, size, loc);
-							else drawAwakeFace(me, size, loc);
-						})
 						counterText.text("t = " + i);
 					}
 					raf = window.requestAnimationFrame(run);
 				}
 
-				var cellGroup = svg.append("g").selectAll(".cn-cells").data(ca.currentCellStates())
-						.enter().append("g");
-				cellGroup.each(function(d,i){
-					var me = d3.select(this);
-					// var numCells = ca.numCells();
-					var loc = { x: radius * Math.cos(i * angle + angleoffset) + center.x - 25,
-											y: radius * Math.sin(i * angle + angleoffset) + center.y - 25 };
-
-					var c = me.append("rect")
-							.attr("class", "cn-cells cn-cell"+i)
-							.attr("x", loc.x)
-							.attr("y", loc.y)
-							.attr("rx", size / 10)
+				// init cell groups
+				var cells = svg.append("g").selectAll(".cn-cells").data(ca.currentCellStates())
+						.enter().append("svg:image")
+							.attr("class", "cn-cells")
+							.attr("x", function(d,i){ return radius * Math.cos(i * angle + angleoffset) + center.x - size/2; })
+							.attr("y", function(d,i){ return radius * Math.sin(i * angle + angleoffset) + center.y - size/2; })
 							.attr("width", size)
 							.attr("height", size)
-							.attr("stroke", stateColors[d])
-							.attr("stroke-width", size / 10)
-							.attr("fill", Color(stateColors[d]).a(0.5).rgbaString());
+							.attr("xlink:href", function(d,i){ return images[d]; });
 
-					
-				});
 			}
 
 			function setupAllCellStatesViz(svg) {
