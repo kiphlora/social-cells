@@ -604,7 +604,7 @@
 												[0,0,1],
 												[0,0,0] ];
 
-				var arrRule = padZeros(dec2basek(90, 2), 1);
+				var arrRule = ca.rule(146).ruleComponents();
 
 				var rulesize = 18;
 				// var arrRule = padZeros(dec2basek(decRule, 2), 1);
@@ -650,7 +650,7 @@
 					
 				})
 
-				var ruleCells = svg.selectAll(".s-plus-1-cell").data(arrRule.reverse())
+				var ruleCells = svg.selectAll(".s-plus-1-cell").data(arrRule)
 					.enter().append("svg:image")
 						.attr("x", function(a,b){ return 0.875 * width + rulesize; })
 						.attr("y", function(a,b){ return 80 + (rulesize * b * 3.5)+rulesize; })
@@ -673,7 +673,7 @@
 				   		ca.rule(basek2dec(arrRule, 2)).customStates(csstr);
 
 				   		nextcells.data(ca.run().currentCellStates()).attr("xlink:href", function(a,b){ return images[a]; });
-				   		ruleCells.data(arrRule.reverse()).attr("xlink:href", function(a,b){ return images[a]; });
+				   		ruleCells.data(ca.ruleComponents()).attr("xlink:href", function(a,b){ return images[a]; });
 
 				   		ruletext.text("Rule: " + ca.rule());
 
@@ -1431,10 +1431,10 @@
 												[0,0,0] ];
 
 
-				
+				var ca = CA(1,2);
 				var size = 30;
 				var decRule = 146;
-				var arrRule = padZeros(dec2basek(decRule, 2), 1);
+				var arrRule = ca.rule(decRule).ruleComponents();
 
 				var socsits = svg.selectAll(".ss-cell-groups").data(configs)
 					.enter().append("g")
