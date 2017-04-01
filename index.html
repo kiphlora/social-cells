@@ -8,177 +8,188 @@
 	<script src="js/d3/d3.min.js"></script>
 
 <style>
-	svg { 
-		border: 0px solid black; 
-		background-color: white;
-	}
+	
 
-	body, html {
-		font-size: 16px;
-		font-family: Helvetica;
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-	}
-
-	.container {
-		margin: 0;
-	}
-
-	.header {
-		width: 100%;
-		background-color: #333;
+	#sandbox-controls {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
 	}
 
-	.header p {
-		margin: 0;
-		color: white;
-		padding: 10px;
+	label, input, button, select {
+		cursor: pointer;
 	}
-
-	.main-title {
-		font-weight: bold;
-		font-size: 2em;
-	}
-
-	.main-subtitle, .authors {
-		font-weight: normal;
-		font-size: 1.25em;
-	}
-
-	.interactive {
-		background-color: white;
-		padding-left: 20%;
-		padding-right: 20%;
-	}
-
-	.section {
-		padding-left: 20%;
-		padding-right: 20%;
-	}
-
 </style>
 </head>
 <body>
 
 	<div class="header">
 		<p class="main-title">Social Cells</p>
-		<p class="main-subtitle">An Introduction to Cellular Automata</p>
+		<p class="main-subtitle">an introduction to cellular automata</p>
 		<p class="authors">by Brett Moran</p>
 	</div>
 	<div class="container">
 		<div class="section">
+			<h2>
+				Introduction
+			</h2>
 			<p>
-				These adorable creatures are cells. They are a type of artificial life. They live their lives chatting away in their social circles, making decisions based on how they and their friends feel at the moment.
+				This is a tale of how <span>complexity</span> can arise from even the simplest of situations...
 			</p>
-			<p> Hover/Tap a cell to view its local network...</p>
+			<p>
+				Take the following fractal for instance.
+			</p>
+			<!-- <p> Hover/Tap a cell to view its local network...</p> -->
+		</div>
+
+		<div id="state-time-grid" class="interactive">
+			<!-- Annotate to demonstrate to the user that the rows will map to time (which is in sec), or just be clear -->
+			<!-- In essence, we're taking a snapshot over 1 sec intervals and displaying them in a column -->
+			<svg></svg>
 		</div>
 		
-		<div class="interactive">
+		<!-- <div class="interactive">
 			<svg id="explore-simple-network"></svg>
-		</div>
+		</div> -->
 		
 		<div class="section">
-			<p>Each cell spends its time either awake or asleep...</p>
-		</div>
-
-		<div class="interactive">
-			<svg id="awake-asleep-intro"></svg>
-		</div>
-
-		<div class="section">
-			<p>Furthermore, each cell reacts to different social situations in exactly the same way.</p>
 			<p>
-				In the cells' simple universe, the number of possible social situations is only eight! (Green = Awake, Gray = Asleep)...
+				It's called the <span>Sierpinsky Triangle</span> and it emerged from the simple, local interactions of things called <span>cells</span>. These cells, along with the simple rules they follow, form what are called Cellular Automata (CA), which are models that we can use to understand and explore many natural phenomena. There are many different types of CA. The ones we will focus on today are called Elementary Cellular Automata. To begin, let's take a closer look at cells.
+			</p>
+			<h2>
+				Cells
+			</h2>
+			<p>
+				There are three important things you need to know about them...
+			</p>
+			<h3>
+				1. They can be in one of two states.
+			</h3>
+			<p>
+				Traditionally, we call these states "Off" and "On", or even more simply, as 0 and 1. To make it feel more real, we're going to call the states <span class="asleep-cell">"asleep"</span> and <span class="awake-cell">"awake"</span>.
 			</p>
 		</div>
 
-		<div class="interactive">
-			<svg id="social-situations-list"></svg>
+		<div id="awake-asleep-intro" class="interactive">
+			<svg></svg>
 		</div>
 
 		<div class="section">
-			<p>In each social situation, each cell decides whether it will wake up or fall asleep.</p>
-			<p>The interesting and fun part: You decide the Rules for each situation!</p>
-			<p>Let's look at the rule 11011110...</p>
-		</div>
+			<h3>
+				2. They evolve over (discrete) steps, simultaneously.
+			</h3>
+			<p>
+			</p>
+			<!-- <p>
+				Similar to social situations in the real world, interactions in CA universes are governed by laws, which they call rules. However, unlike our own rules, theirs are comprehensive and inflexible; all cells behave exactly the same way in each situation. Since there are eight social situations and the cell has two states to choose from for each of those situations, there are 256 different rules that the cells can follow.
+			</p>
+			<p>
+				
+			</p> -->
 
-		<div class="interactive">
-			<svg id="rule-222-closer-to-wolfram-view"></svg>
+			<p>
+				Each cell determines its next state (t+1) by using information it has access to in its current state (t). 
+			</p>
+			<p>
+				In order to better see and understand this discrete stepping concept, press the "Start" button in the interactive below to watch as the cells change their states each second.
+			</p>
 		</div>
-
+		
+		<div id="discrete-time-single-row" class="interactive">
+			<svg></svg>
+		</div>
+		
 		<div class="section">
 			<p>
-				In order to see the cells talk, we need to start time for them. Each second, each cell will decide which state to be in based on the current social situation it finds itself in and Rule 222.
+				It looks interesting, but it's hard to tell what kind of pattern (if any) is being formed by the CA. In order to solve this problem, we typically display all of the steps we've run at the same time. Below, you'll find the same CA as above, but this time, we're displaying each step as a new row, moving downward over time.
+			</p>
+			<p>
+				Press the "Start" button to see the pattern unfold.
+			</p>
+		</div>
+
+		<div id="state-time-grid-animated" class="interactive">
+			<svg></svg>
+		</div>
+
+		<div class="section">
+			<h3>
+				3. They are quite social.
+			</h3>
+			<p>
+				The cells are part of a network. Each cell is connected to the cells directly to the left and right of it. The three cells, togther, form a local <span>neighborhood</span>. Below, you'll find an interactive that helps illustrate this concept.
+			</p>
+			<p>
+				Hover/Tap a cell to see its neighborhood. Note that the cells at the ends of the row are connected; the circular, network representation helps clarify this.
 			</p>
 		</div>
 	
-		<div class="interactive">
-			<svg id="run-circular-network-over-time"></svg>
+		<div id="explore-network" class="interactive">
+			<svg></svg>
 		</div>
 
 		<div class="section">
-			<p>It's difficult to see what's happening. Let's do three things:</p>
-			<ol>
-				<li>Flatten our cells into a row. Note that the far left and far right cells still talk to each other.</li>
-				<li>Each row will show the states of the cells at a specific time.</li>
-				<li>Make each cell sleep, except for the center one, which we'll keep awake.</li>
-				<!-- 3. can be relaxed later, but doing this now makes the patterns more consistent -->
-			</ol>
+			<p>	
+			  Much like in real life, cells chat with their friends and neighbors to help them make decisions. In each neighborhood, the center cell decides its next state by looking at the current states of its neighbors and itself.Since the neighborhood has three cells and each of those cells can have two possible states, there are a total of eight different combinations of cells. Let's call these combinations <span>social situations</span>.
+			</p>
+			<p>
+				How do the cells know how to behave in these social situations? Well, similar to social situations in the real world, interactions in CA universes are governed by laws, which they call <span>rules</span>. However, unlike our own rules, theirs are exhaustive and inflexible; all situations are codified and all cells behave exactly the same way in each situation. Since there are eight social situations in elementary CA and because the center cell can choose one of two states for each of those situations, there are 256 different rules that the cells can follow.
+			</p>
+			<p>
+				Below is an interactive that shows the eight possible social situations (Groups of three cells on top) and the rule (Single cells on the bottom) that tells the center cell what to do on the next iteration. The eight cells on the bottom correspond to one of the 256 possible rules that elementary CA can have. Further, since the states are binary, we can create a binary number using the states (with Asleep being zero and Awake being one). This binary string can then be converted to a decimal number between 0 and 255.
+			</p>
+			<p>
+				Try clicking/tapping on the bottom cells to change the rules.
+			</p>
 		</div>
 
-		<div class="interactive">
-			<!-- Annotate to demonstrate to the user that the rows will map to time (which is in sec), or just be clear -->
-			<!-- In essence, we're taking a snapshot over 1 sec intervals and displaying them in a column -->
-			<svg id="state-time-grid"></svg>
-		</div>
-
-		<div class="section">
-			<p>Interesting! This rule creates a triangular pattern over time.</p> 
-			<p>Try a few more rules to see what you can find...</p>
-		</div>
-
-		<div class="interactive">
-			<svg id="center-focused-eca-with-customizable-rules"></svg>
+		<div id="social-situations-and-rules" class="interactive">
+			<svg></svg>
 		</div>
 
 		<div class="section">
-			<p>Stephan Wolfram, who studied the topic of Celluar Automata (CA) - which is what these creatures are - discovered four classes of patterns:</p>
-			<p>  Class 1: These CA quickly converge to a uniform state (either all fall asleep, or all awaken quickly).</p>
-			<p>  Class 2: These CA quickly converge to a repetitive/oscillatory or stable state.</p>
-			<p>  Class 3: These CA appear to always be in a random state.</p>
-			<p>  Class 4: These CA form areas of repetitive or stable states, but also form structures that interact in complex ways.</p>
-
-			<p>Some rules are difficult to classify, but most clearly fall into one (or more) of these classes.</p>
-			<p>Here are all 256 possible rules for our center-focused, awake/asleep, 8 social situation CA...</p>
+			<p>
+				The last piece of the puzzle is to witness the changing of the states. Hover/Tap the cells in the interactive below to see how this transition works.
+			</p>
 		</div>
 
-		<div class="interactive">
-			<canvas id="all-256-rules"></canvas>
+		<div id="changing-of-the-states" class="interactive">
+			<svg></svg>
 		</div>
-
+	
 		<div class="section">
-			<p>Cellular Automata are very simple, but can be made considerably more complex even my just adding another state, or by extending the local network of friends a cell can talk to.</p>
-			<p>Here's a lovely little sandbox where you can tweak many of the things we spoke about... Enjoy!</p>
+			<p>Recapping, elementary cellular automata have two states, which we have called "asleep" and "awake" for this demonstration. They update their states over discrete steps (usually over time), by interacting with their neighbhors. And, sometimes, the rules they use to make these updating decisions result in some interesting emergent patterns. </p>
+			<p>
+				Here's a little sandbox where you can explore these 256 rules at your leisure.
+			</p>
+			<p>
+				Changing the rules: 
+			</p>
+			<ul>
+				<li>Toggle individual rule components on the right side.</li>
+				<li>Use the drop-down box to select a specific rule.</li>
+				<li>Click the Randomize rule button.</li>
+			</ul>
+			<p>
+				Checking the Randomize Initial States checkbox will randomly select cells from the first row to be asleep or awake.
+			</p>
+			<p>
+				The Refresh button is used for re-running the CA simulation. This is most useful when the Randomize Initial States checkbox is selected, as this will generate new, random initial conditions.
+			</p>
+			<p>
+				Most of all... Enjoy yourself and see what kinds of patterns you can find!
+			</p>
 		</div>
 
-		<div class="interactive">
-			<!-- Make annotations to explain how the state spaces are incredibly large, even after merely increasing the number of states by one! And, they are even larger if the number of friends increases by 2! As such, a randomize rule button exists to help explore the mind-bogglingly large space of possible rules. -->
-			<!-- Incorporate random initial conditions and center-focused initial conditions. -->
-			<!-- Allow the user to change the color, as well, have 5-8 presets, and a color wheel option. -->
-			<!-- Allow the user to change the number of cells to run with (with min and max values). -->
-			<!-- Allow the user to choose between 2 and 3 states. -->
-			<!-- Allow the user to choose between 3 and 5 neighbors. -->
-			<!-- Do not allow/force the user to input specific binary/tertiary components for anything beyond the simple CA(1,2) simulation - CA(1,2) means CA with radius 1 (ie 1 to the left, 1 to the right, and the cell itself) and 2 possible states for each cell to choose from. -->
-			<svg id="ca-sandbox"></svg>
+		<div id="ca-sandbox" class="interactive">
+			<svg></svg>
+			<div id="sandbox-controls">
+				<div><label><input type="checkbox" id="init-state-checkbox"> Randomize Initial States</label></div>
+				<div><label>Rule <select name="rules" id="select-rule"></select></label></div>
+			</div>
 		</div>
 
-		<div id="footer">
-			<p>Thanks so much for checking this out! Please send any feedback to bam@kiphlora.com</p>
+		<div class="footer">
+			<p>Thanks so much for checking this out! Please send any feedback to bmoran.bam@gmail.com</p>
 			<p>I would like to thank Nicky Case for inspiring me with own her incredible explorable explanations, as well as Bret Victor for his numerous talks and demonstrations of them.</p>
 			<p>I would also like to thank those who helped me make this into something great through lots of feedback and testing.</p>
 			<p>References:</p>
@@ -192,47 +203,788 @@
 	</div>
 
 	<script>
-			var exploreSimpleSVG = d3.select("#explore-simple-network");
-			var awakeasleepintroSVG = d3.select("#awake-asleep-intro");
-			var all256RulesSVG = d3.select("#all-256-rules");
-			var circularNetworkSVG = d3.select("#run-circular-network-over-time");
-			var stateTimeGridSVG = d3.select("#state-time-grid");
-			var socialSituationsSVG = d3.select("#social-situations-list");
+
+			var stateTimeGridDiv = d3.select("#state-time-grid");
+			var awakeasleepintroDiv = d3.select("#awake-asleep-intro");
+			var socialSituationsDiv = d3.select("#social-situations-and-rules");
+			var discreteTimeSingleRowDiv = d3.select("#discrete-time-single-row");
+			var stateTimeGridAnimDiv = d3.select("#state-time-grid-animated");
+			var exploreNetworkDiv = d3.select("#explore-network");
+			var changingOfTheStatesDiv = d3.select("#changing-of-the-states");
+			var sandboxDiv = d3.select("#ca-sandbox");
 
 
-
-			var stateColors = [ "#cccccc", "#28a328" ];
+			var stateColors = [ "#a6a6a6", "#28a328" ];
 			var fillColors = [ "#dedede", "#48c448" ];
 
 			var images = [ "img/asleep-cell-square.svg", "img/awake-cell-square.svg" ];
 
 
-			d3.selectAll("svg")
-					.attr("width", window.innerWidth * 0.6)
-					.attr("height", 700);
-
 			
-					//.run(500);
-
-			// var cs = ca.cellStates();
 			var i = 0;
-			// var cellGroup;
 
-			setupExploreSimpleNetwork(exploreSimpleSVG);
-			setupAwakeAsleepIntro(awakeasleepintroSVG);
-			setupCircularNetwork(circularNetworkSVG);
-			setupStateTimeGrid(stateTimeGridSVG);
-			setupSocialSituations(socialSituationsSVG);
+			setupAwakeAsleepIntro(awakeasleepintroDiv);
+			setupStateTimeGrid(stateTimeGridDiv);
+			setupSocialSituations(socialSituationsDiv);
+			setupDiscreteTimeSingleRow(discreteTimeSingleRowDiv);
+			setupStateTimeGridAnim(stateTimeGridAnimDiv);
+			setupExploreNetwork(exploreNetworkDiv);
+			setupChangingOfTheStates(changingOfTheStatesDiv);
+			setupSandbox(sandboxDiv);
+
+
+			function setupSandbox(div) {
+
+				var ghostImages = [ "img/asleep-cell-square-ghost.svg", "img/awake-cell-square-ghost.svg" ];
+				var randomInit = false;
+
+				var width = 960;
+				var height = 640;
+				var maxSteps = 20;
+
+				var svg = div.select("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.style("border", "1px solid #ddd");
+
+				var ca = CA(1,2)
+						.numCells(135)
+						.rule(146)
+						// .randomizeStates();
+
+				var ruleOptions = div.select("#select-rule").selectAll(".option-rules").data(d3.range(ca.ruleRange()[1]+1))
+					.enter().append("option")
+						.property("value", function(d,i){ return d; })
+						.property("selected", function(d,i){ return d === ca.rule() ? "selected" : ""; })
+						.text(function(d,i){ return d; });
+				div.select("#select-rule")
+					.on("change", function(d,i){
+						var val = d3.select('select').property('value');
+						console.log(val);
+						ca.reset();
+						ca.rule(val);
+						arrRule = ca.ruleComponents();
+
+						ruleCells.data(ca.ruleComponents()).classed("sleeping", function(a,b){ return a === 0 ? true : false; }).attr("xlink:href", function(a,b){ return images[a]; });
+						ruleOptions.property("selected", function(d,i){ return d === ca.rule() ? "selected" : ""; })
+						ruletext.text("Rule: " + ca.rule());
+
+						if (randomInit) ca.randomizeStates();
+						ca.run(runs-1);
+
+						rowgroups.data(ca.cellStatesStr()).each(function(d,i){
+							d3.select(this).selectAll(".row-cells").data(d)
+									// .attr("xlink:href", function(a,b){ return ghostImages[a]; });
+									.attr("fill", function(a,b){ return fillColors[a]; })
+									.attr("stroke", function(a,b){ return stateColors[a]; })
+						});
+					})
+
+				var size = Math.floor(0.85 * width / ca.numCells());
+				var runs = Math.floor(height / size);
+
+				ca.run(runs-1);
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0* width, 0.85*width], 0, 0);
+
+				var yscale = d3.scale.ordinal()
+						.domain(d3.range(runs))
+						.rangeRoundBands([0, height], 0, 0);
+
+				var cellstatedata = ca.cellStatesStr();
+
+				var rowgroups = svg.selectAll(".row-groups").data(cellstatedata)
+					.enter().append("g");
+
+				rowgroups.each(function(d,i){
+					var me = d3.select(this);
+
+					me.selectAll(".row-cells").data(d)
+						.enter().append("rect")
+						// .enter().append("svg:image")
+							.attr("class", "row-cells")
+							.attr("x", function(a,b){ return xscale(b); })
+							.attr("y", function(a,b){ return yscale(i); })
+							.attr("rx", 0.5)
+							.attr("width", size)
+							.attr("height", size)
+							// .attr("xlink:href", function(a,b){ return ghostImages[a]; })
+							.attr("fill", function(a,b){ return fillColors[a]; })
+							.attr("stroke", function(a,b){ return stateColors[a]; })
+							.attr("stroke-width", 0.3)
+							.style("opacity", 1);
+				})
+
+
+
+				var configs = [ [1,1,1],
+												[1,1,0],
+												[1,0,1],
+												[1,0,0],
+												[0,1,1],
+												[0,1,0],
+												[0,0,1],
+												[0,0,0] ];
+
+				var arrRule = padZeros(dec2basek(90, 2), 1);
+
+				var rulesize = 18;
+				// var arrRule = padZeros(dec2basek(decRule, 2), 1);
+
+				var socsits = svg.selectAll(".cots-ss-cell-groups").data(configs)
+					.enter().append("g")
+						.attr("class", "cots-ss-cell-groups");
+
+				// var ys = [rulesize*2, 3*rulesize*2, 5*rulesize*2, 7*rulesize*2];
+				socsits.each(function(d,i){
+					var me = d3.select(this);
+
+					me.append("g").selectAll(".cots-ss-cell").data(d)
+						.enter().append("g")
+						.each(function(a,b){
+							d3.select(this).append("svg:image")
+									.attr("x", 0.9 * width + (b * rulesize))
+									.attr("y", 80 + rulesize * i * 3.5)
+									.attr('width', rulesize)
+									.attr('height', rulesize)
+									.attr("xlink:href", images[a]);
+
+							d3.select(this).append("rect")
+									.attr("x", 0.9 * width + (b * rulesize) + (rulesize * 0.25))
+									.attr("y", 80 + rulesize * i * 3.5 - rulesize/1.5)
+									.attr("rx", 0)
+									.attr("width", rulesize/2)
+									.attr("height", rulesize/1.5)
+									.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+									.attr("stroke", "#333")
+									.attr("stroke-width", 1.5)
+									.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", 0.9 * width + (b * rulesize))
+								.attr("y", 80 + rulesize * i * 3.5 - 1)
+								.attr("width", rulesize)
+								.attr("height", 2)
+								.attr("fill", "#333")
+								.style("opacity", 0);
+						})
+					
+					
+				})
+
+				var ruleCells = svg.selectAll(".s-plus-1-cell").data(ca.ruleComponents())
+					.enter().append("svg:image")
+						.attr("x", function(a,b){ return 0.9 * width + rulesize; })
+						.attr("y", function(a,b){ return 80 + (rulesize * b * 3.5)+rulesize; })
+				    .attr('width', rulesize)
+				    .attr('height', rulesize)
+				    .attr("xlink:href", function(a,b){ return images[a]; })
+				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; })
+				    .style("cursor", "pointer")
+				   .on("click", function(d,i){
+				   		var me = d3.select(this);
+				   		me.classed("sleeping", !me.classed("sleeping"));
+
+				   		ruleCells.each(function(a,b){
+					  		var sleeping = d3.select(this).classed("sleeping");
+				  			arrRule[b] = sleeping ? 0 : 1;
+				   		});
+
+				   		// var csstr = ca.cellStatesStr()[0];
+				   		ca.reset();
+				   		ca.rule(basek2dec(arrRule, 2));
+				   		// ca.rule(basek2dec(arrRule, 2)).customStates(csstr);
+
+				   		ruleCells.data(ca.ruleComponents()).classed("sleeping", function(a,b){ return a === 0 ? true : false; }).attr("xlink:href", function(a,b){ return images[a]; });
+				   		ruleOptions.property("selected", function(d,i){ return d === ca.rule() ? "selected" : ""; })
+				   		ruletext.text("Rule: " + ca.rule());
+
+				   		if (randomInit) ca.randomizeStates();
+				   		ca.run(runs-1);
+
+				   		rowgroups.data(ca.cellStatesStr()).each(function(d,i){
+				   			d3.select(this).selectAll(".row-cells").data(d)
+				   					// .attr("xlink:href", function(a,b){ return ghostImages[a]; });
+				   					.attr("fill", function(a,b){ return fillColors[a]; })
+				   					.attr("stroke", function(a,b){ return stateColors[a]; })
+				   		})
+
+
+				   })
+
+				var ruletext = svg.append("text")
+						.attr("x", 0.9 * width + rulesize + rulesize /2)
+						.attr("y", 50)
+						.text("Rule: " + ca.rule())
+						.attr("text-anchor", "middle")
+
+				var randomRuleButton = div.append("button").text("Random rule").on("click", function(){
+					ca.reset();
+					ca.randomRule();
+					arrRule = ca.ruleComponents();
+
+					ruleCells.data(ca.ruleComponents()).classed("sleeping", function(a,b){ return a === 0 ? true : false; }).attr("xlink:href", function(a,b){ return images[a]; });
+					ruleOptions.property("selected", function(d,i){ return d === ca.rule() ? "selected" : ""; })
+					ruletext.text("Rule: " + ca.rule());
+
+					if (randomInit) ca.randomizeStates();
+					ca.run(runs-1);
+
+					rowgroups.data(ca.cellStatesStr()).each(function(d,i){
+						d3.select(this).selectAll(".row-cells").data(d)
+								// .attr("xlink:href", function(a,b){ return ghostImages[a]; });
+								.attr("fill", function(a,b){ return fillColors[a]; })
+								.attr("stroke", function(a,b){ return stateColors[a]; })
+					});
+
+				});
+
+				var refreshButton = div.append("button").text("Refresh").on("click", function(){
+					ca.reset();
+					
+					if (randomInit) ca.randomizeStates();
+					ca.run(runs-1);
+
+					rowgroups.data(ca.cellStatesStr()).each(function(d,i){
+						d3.select(this).selectAll(".row-cells").data(d)
+								// .attr("xlink:href", function(a,b){ return ghostImages[a]; });
+								.attr("fill", function(a,b){ return fillColors[a]; })
+								.attr("stroke", function(a,b){ return stateColors[a]; })
+					});
+				})
+
+				var randomStart = div.select("#init-state-checkbox");
+				randomStart.property("checked", "");
+				randomStart.on("change", function(){
+					randomInit = !randomInit;
+
+					ca.reset();
+					arrRule = ca.ruleComponents();
+
+					ruleCells.data(ca.ruleComponents()).classed("sleeping", function(a,b){ return a === 0 ? true : false; }).attr("xlink:href", function(a,b){ return images[a]; });
+					ruleOptions.property("selected", function(d,i){ return d === ca.rule() ? "selected" : ""; })
+					ruletext.text("Rule: " + ca.rule());
+
+					if (randomInit) ca.randomizeStates();
+					ca.run(runs-1);
+
+					rowgroups.data(ca.cellStatesStr()).each(function(d,i){
+						d3.select(this).selectAll(".row-cells").data(d)
+								// .attr("xlink:href", function(a,b){ return ghostImages[a]; });
+								.attr("fill", function(a,b){ return fillColors[a]; })
+								.attr("stroke", function(a,b){ return stateColors[a]; })
+					});
+
+
+				})
+
+			}
+
+			function setupChangingOfTheStates(div) {
+				var width = 960;
+				var height = 600;
+				var maxSteps = 20;
+
+				var svg = div.select("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.style("border", "1px solid #ddd");
+
+				var size = 35;
+
+				var ca = CA(1,2)
+						.numCells(21)
+						.rule(146)
+						.randomizeStates();
+
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0* width, 0.80*width], 0, 0);
+
+				var cells = svg.append("g").selectAll(".cots-cells").data(ca.currentCellStates())
+						.enter().append("g").each(function(d,i){
+							
+							d3.select(this).append("svg:image")
+									.attr("class", "cots-cells cots-cell"+i)
+									.attr("x", xscale(i))
+									.attr("y", height/2 - size/2 - size/2)
+									.attr("width", size)
+									.attr("height", size)
+									.attr("xlink:href", images[d])
+									.style("opacity", 1);
+
+							d3.select(this).append("rect")
+									.attr("class", "hat")
+									.attr("x", xscale(i) + (size*0.25))
+									.attr("y", height/2 - size/2 - size/2 - size/1.5)
+									.attr("rx", 0)
+									.attr("width", size/2)
+									.attr("height", size/1.5)
+									.attr("stroke", "#333")
+									.attr("stroke-width", 2.5)
+									.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", xscale(i))
+								.attr("y", height/2 - size/2 - size/2)
+								.attr("width", size)
+								.attr("height", 3)
+								.attr("fill", "#333")
+								.style("opacity", 0);
+
+						})
+						.on("mouseover", function(d,i){
+							// reset next cells and hats
+							nextcells.style("opacity", 0);
+							cells.selectAll("rect").style("opacity", 0);
+							socsits.selectAll("rect").style("opacity", 0);
+
+							nextcells.filter(function(a,b){ return i === b; }).style("opacity", 1);
+							var left = cells.filter(function(a,b){ return b === mod(i-1, ca.numCells()); });
+							var right = cells.filter(function(a,b){ return b === mod(i+1, ca.numCells()); });
+							var me = d3.select(this);
+
+							left.selectAll("rect").style("opacity", 1);
+							left.select(".hat").attr("fill", "#333");
+
+							me.selectAll("rect").style("opacity", 1);
+							me.select(".hat").attr("fill", "#999");
+
+							right.selectAll("rect").style("opacity", 1);
+							right.select(".hat").attr("fill", "#ddd");
+
+							var neighborhood = [left.datum(), d, right.datum()];
+
+							var soc = socsits.filter(function(a,b){ return areArraysEqual(a, neighborhood); });
+							soc.selectAll("rect").style("opacity", 1);
+						})
+						// .on("mouseout", function(d,i){
+						// 	nextcells.filter(function(a,b){ return i === b; }).style("opacity", 0);
+						// 	var left = cells.filter(function(a,b){ return b === mod(i-1, ca.numCells()); });
+						// 	var right = cells.filter(function(a,b){ return b === mod(i+1, ca.numCells()); });
+						// 	var me = d3.select(this);
+
+						// 	left.selectAll("rect").style("opacity", 0);
+						// 	me.selectAll("rect").style("opacity", 0);
+						// 	right.selectAll("rect").style("opacity", 0);
+
+						// 	socsits.selectAll("rect").style("opacity", 0);
+						// })
+							
+
+				var nextcells = svg.append("g").selectAll(".cots-next-cells").data(ca.run().currentCellStates())
+						.enter().append("svg:image")
+							.attr("class", function(d,i){ return "cots-next-cells cots-next-cell"+i; })
+							.attr("x", function(d,i){ return xscale(i); })
+							.attr("y", height/2 + size/2 - size/2)
+							.attr("width", size)
+							.attr("height", size)
+							.attr("xlink:href", function(d,i){ return images[d]; })
+							.style("opacity", 0);
+
+
+				var vline = svg.append("line")
+						.attr("x1", 0.8*width)
+						.attr("y1", 0.05*height)
+						.attr("x2", 0.8*width)
+						.attr("y2", 0.95*height)
+						.attr("stroke", "#ddd")
+
+
+
+				var configs = [ [1,1,1],
+												[1,1,0],
+												[1,0,1],
+												[1,0,0],
+												[0,1,1],
+												[0,1,0],
+												[0,0,1],
+												[0,0,0] ];
+
+				var arrRule = padZeros(dec2basek(90, 2), 1);
+
+				var rulesize = 18;
+				// var arrRule = padZeros(dec2basek(decRule, 2), 1);
+
+				var socsits = svg.selectAll(".cots-ss-cell-groups").data(configs)
+					.enter().append("g")
+						.attr("class", "cots-ss-cell-groups");
+
+				// var ys = [rulesize*2, 3*rulesize*2, 5*rulesize*2, 7*rulesize*2];
+				socsits.each(function(d,i){
+					var me = d3.select(this);
+
+					me.append("g").selectAll(".cots-ss-cell").data(d)
+						.enter().append("g")
+						.each(function(a,b){
+							d3.select(this).append("svg:image")
+									.attr("x", 0.875 * width + (b * rulesize))
+									.attr("y", 80 + rulesize * i * 3.5)
+									.attr('width', rulesize)
+									.attr('height', rulesize)
+									.attr("xlink:href", images[a]);
+
+							d3.select(this).append("rect")
+									.attr("x", 0.875 * width + (b * rulesize) + (rulesize * 0.25))
+									.attr("y", 80 + rulesize * i * 3.5 - rulesize/1.5)
+									.attr("rx", 0)
+									.attr("width", rulesize/2)
+									.attr("height", rulesize/1.5)
+									.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+									.attr("stroke", "#333")
+									.attr("stroke-width", 1.5)
+									.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", 0.875 * width + (b * rulesize))
+								.attr("y", 80 + rulesize * i * 3.5 - 1)
+								.attr("width", rulesize)
+								.attr("height", 2)
+								.attr("fill", "#333")
+								.style("opacity", 0);
+						})
+					
+					
+				})
+
+				var ruleCells = svg.selectAll(".s-plus-1-cell").data(arrRule.reverse())
+					.enter().append("svg:image")
+						.attr("x", function(a,b){ return 0.875 * width + rulesize; })
+						.attr("y", function(a,b){ return 80 + (rulesize * b * 3.5)+rulesize; })
+				    .attr('width', rulesize)
+				    .attr('height', rulesize)
+				    .attr("xlink:href", function(a,b){ return images[a]; })
+				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; })
+				    .style("cursor", "pointer")
+				   .on("click", function(d,i){
+				   		var me = d3.select(this);
+				   		me.classed("sleeping", !me.classed("sleeping"));
+
+				   		ruleCells.each(function(a,b){
+					  		var sleeping = d3.select(this).classed("sleeping");
+				  			arrRule[b] = sleeping ? 0 : 1;
+				   		});
+
+				   		var csstr = ca.cellStatesStr()[0];
+				   		ca.reset();
+				   		ca.rule(basek2dec(arrRule, 2)).customStates(csstr);
+
+				   		nextcells.data(ca.run().currentCellStates()).attr("xlink:href", function(a,b){ return images[a]; });
+				   		ruleCells.data(arrRule.reverse()).attr("xlink:href", function(a,b){ return images[a]; });
+
+				   		ruletext.text("Rule: " + ca.rule());
+
+
+				   })
+
+				var ruletext = svg.append("text")
+						.attr("x", 0.875 * width + rulesize + rulesize /2)
+						.attr("y", 50)
+						.text("Rule: " + ca.rule())
+						.attr("text-anchor", "middle")
+
+			}
+
+			function setupExploreNetwork(div) {
+
+				var svg = div.select("svg");
+
+				var width = 960;
+				var height = 500;
+				svg.attr("width", width).attr("height", height);
+
+				var ca = CA(1,2)
+						.numCells(11)
+						.rule(146)
+						.randomizeStates();
+						// .run();
+
+				var center = { x: 3 * width / 4, y: height / 2 };
+				var radius = 170;
+				var size = 30;
+				var angle = 2 * Math.PI / ca.numCells();
+				var angleoffset = Math.PI/2;
+
+				var cellLocs = [];
+				for (var i=0; i<ca.numCells(); i++) {
+					cellLocs[i] = { x: radius * Math.cos(i * angle + angleoffset) + center.x - size/2,
+													y: radius * Math.sin(i * angle + angleoffset) + center.y - size/2 };
+				}
+
+				for (var i=0; i<ca.numCells(); i++) {
+					var x1, x2, y1, y2;
+
+					x1 = cellLocs[i].x + size/2;
+					y1 = cellLocs[i].y + size/2;
+					x2 = cellLocs[mod(i+1, cellLocs.length)].x + size/2;
+					y2 = cellLocs[mod(i+1, cellLocs.length)].y + size/2;
+
+					svg.append("line")
+							.attr("class", "sn-line")
+							.attr("x1", x1)
+							.attr("y1", y1)
+							.attr("x2", x2)
+							.attr("y2", y2)
+							.attr("stroke", "#fff")
+							.attr("stroke-width", 3);
+				}
+
+				var currentcells = svg.selectAll(".chosen-cells").data([-1,0,1])
+					.enter().append("g")
+						.attr("class", "chosen-cells");
+
+				var cellGroup = svg.append("g").selectAll(".ecn-cells").data(ca.currentCellStates())
+						.enter().append("g");
+				cellGroup.each(function(d,i){
+					var me = d3.select(this);
+					// var numCells = ca.numCells();
+					var loc = cellLocs[i];
+					
+					var c = me.append("svg:image")
+							.attr("class", "cn-cells cn-cell"+i)
+							.attr("x", loc.x)
+							.attr("y", loc.y)
+							.attr("width", size)
+							.attr("height", size)
+							.attr("xlink:href", images[d])
+						.on("mouseover", function(){
+							// happy face; chatting face
+							// text bubble, saying hi to neighbors
+							
+							var lines = d3.selectAll(".sn-line");
+							lines.attr("stroke", "#fff");
+							lines.filter(function(a,b){ return (b === i) || (b === mod(i-1, cellLocs.length)); })
+									.attr("stroke", "#ccc");
+
+							currentcells.each(function(a,b){
+								var loc = cellLocs[mod(i+a, cellLocs.length)];
+								var me = d3.select(this);
+								me.selectAll("rect").remove();
+
+									me.append("rect")
+										.attr("x", loc.x + size/4)
+										.attr("y", loc.y - size/1.5 + 1)
+										.attr("rx", 0)
+										.attr("width", size/2)
+										.attr("height", size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("stroke", "#333")
+										.attr("stroke-width", 2.5);
+
+									me.append("rect")
+										.attr("x", loc.x)
+										.attr("y", loc.y - 2)
+										.attr("width", size)
+										.attr("height", 3)
+										.attr("fill", "#333")
+
+								loc = rowcellLocs[mod(i+a, cellLocs.length)];
+									me.append("rect")
+										.attr("x", loc.x + size/4)
+										.attr("y", loc.y - size/1.5 + 1)
+										.attr("rx", 0)
+										.attr("width", size/2)
+										.attr("height", size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("stroke", "#333")
+										.attr("stroke-width", 2.5)
+
+									me.append("rect")
+										.attr("x", loc.x)
+										.attr("y", loc.y - 2)
+										.attr("width", size)
+										.attr("height", 3)
+										.attr("fill", "#333")
+							});
+
+						});
+				});
+					
+
+				svg.append("line")
+						.attr("x1", width * 0.5)
+						.attr("y1", height * 0.1)
+						.attr("x2", width * 0.5)
+						.attr("y2", height * 0.9)
+						.attr("stroke", "#ddd");
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0.05 * width, 0.45 * width], 0, 0);
+
+				var rowcellLocs = [];
+				var rowcellsize = 30;
+				for (var i=0; i<ca.numCells(); i++) {
+					rowcellLocs[i] = { x: xscale(i), y: height/2 };
+				}
+
+				var cells = svg.append("g").selectAll(".ecn-row-cells").data(ca.currentCellStates())
+						.enter().append("svg:image")
+							.attr("class", function(d,i){ return "ecn-row-cells ecn-row-cell"+i; })
+							.attr("x", function(d,i){ return rowcellLocs[i].x; })
+							.attr("y", function(d,i){ return rowcellLocs[i].y; })
+							.attr("width", rowcellsize)
+							.attr("height", rowcellsize)
+							.attr("xlink:href", function(d,i){ return images[d]; })
+						.on("mouseover", function(d,i){
+							var lines = d3.selectAll(".sn-line");
+							lines.attr("stroke", "#fff");
+							lines.filter(function(a,b){ return (b === i) || (b === mod(i-1, cellLocs.length)); })
+									.attr("stroke", "#ccc");
+
+							currentcells.each(function(a,b){
+								var loc = cellLocs[mod(i+a, cellLocs.length)];
+								var me = d3.select(this);
+								me.selectAll("rect").remove();
+
+									me.append("rect")
+										.attr("x", loc.x + size/4)
+										.attr("y", loc.y - size/1.5 + 1)
+										.attr("rx", 0)
+										.attr("width", size/2)
+										.attr("height", size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("stroke", "#333")
+										.attr("stroke-width", 2.5);
+
+									me.append("rect")
+										.attr("x", loc.x)
+										.attr("y", loc.y - 2)
+										.attr("width", size)
+										.attr("height", 3)
+										.attr("fill", "#333")
+
+								loc = rowcellLocs[mod(i+a, cellLocs.length)];
+									me.append("rect")
+										.attr("x", loc.x + size/4)
+										.attr("y", loc.y - size/1.5 + 1)
+										.attr("rx", 0)
+										.attr("width", size/2)
+										.attr("height", size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("stroke", "#333")
+										.attr("stroke-width", 2.5)
+
+									me.append("rect")
+										.attr("x", loc.x)
+										.attr("y", loc.y - 2)
+										.attr("width", size)
+										.attr("height", 3)
+										.attr("fill", "#333")
+							});
+						});
+
+			}
+
+			function setupDiscreteTimeSingleRow(div) {
+				var width = 960;
+				var height = 200;
+				var maxSteps = 20;
+
+				var svg = div.select("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.style("border", "1px solid #ddd");
+
+				var size = 20;
+
+				var ca = CA(1,2)
+						.numCells(41)
+						.rule(146);
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0, 0.9*width], 0, 0);
+
+				var cells = svg.append("g").selectAll(".dt-cells").data(ca.currentCellStates())
+						.enter().append("svg:image")
+							.attr("class", function(d,i){ return "cn-cells cn-cell"+i; })
+							.attr("x", function(d,i){ return 0.05 * width + xscale(i); })
+							.attr("y", height/2-size/2)
+							.attr("width", size)
+							.attr("height", size)
+							.attr("xlink:href", function(d,i){ return images[d]; });
+
+				var button = div.append("button").text("Start").on("click", function(){
+					var me = d3.select(this);
+					if (reset) {
+						ca.reset();
+						i = 0;
+						counterText.text("t = " + i);
+						reset = false;
+						cells.data(ca.currentCellStates()).attr("xlink:href", function(d,i){ return images[d]; });
+						me.classed("running", false).text("Start");
+					}
+					else {
+						me.classed("running", !me.classed("running"));
+						if (!me.classed("running")) { me.text("Start"); window.cancelAnimationFrame(raf); }
+						else { me.text("Pause"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
+					}
+				});
+
+				var counterText = div.append("p").text("t = 0")
+						.style("position", "absolute")
+						.style("margin-left", "80%")
+						.style("left", 0)
+						.style("font-size", "0.8em")
+						.style("top", height/2 - size/2 + 5 + "px");
+
+
+				
+
+				var curTime = Date.now();
+				var prevTime = Date.now();
+				var eTime = 0;
+				var delay = 1000;
+				var i = 0;
+				var reset = false;
+				var center = { x: width / 2, y: height / 2 };
+
+				var raf;// = window.requestAnimationFrame(run);
+
+				
+
+				function run(t) {		
+
+					curTime = Date.now();	
+					eTime += curTime - prevTime;
+					prevTime = curTime;
+					console.log(eTime);
+
+					if (eTime >= delay) {
+						eTime = 0;
+						if (i === maxSteps) { 
+							button.text("Reset"); 
+							window.cancelAnimationFrame(raf);
+							reset = true;
+							button.classed("running", false);
+							return; 
+						}
+					
+						ca.run();
+						i++;
+
+						cells.data(ca.currentCellStates()).attr("xlink:href", function(d,i){ return images[d]; });
+
+						counterText.text("t = " + i);
+					}
+					raf = window.requestAnimationFrame(run);
+				}
+
+			}
 
 
 			function setupExploreSimpleNetwork(svg) {
-				var width = 900;
+				var width = 960;
 				var height = 500;
 				svg.attr("width", width).attr("height", height);
 
 				var ca = CA(1,2)
 						.numCells(7)
-						.rule(0)
+						.rule(146)
 						.randomizeStates();
 						// .run();
 
@@ -299,9 +1051,11 @@
 				});
 			}
 
-			function setupAwakeAsleepIntro(svg) {
-				var width = 900;
-				var height = 400;
+			function setupAwakeAsleepIntro(div) {
+
+				var svg = div.select("svg");
+				var width = 960;
+				var height = 300;
 				svg.attr("width", width).attr("height", height);
 
 				var center = { x: width / 2, y: height/2 };
@@ -314,13 +1068,25 @@
 						.attr("y2", height * 0.9)
 						.attr("stroke", "#ddd");
 
-				var awakeLoc = { x: center.x / 2 - size/2, y: center.y - size/2 };
+				var awakeLoc = { x: 3 * center.x / 2 - size/2, y: center.y - size/1.5 };
 				svg.append("svg:image")
 				   .attr('x', awakeLoc.x)
 				   .attr('y', awakeLoc.y)
 				   .attr('width', size)
 				   .attr('height', size)
 				   .attr("xlink:href", images[1])
+
+				svg.append("text")
+						.attr("x", awakeLoc.x + size / 2)
+						.attr("y", awakeLoc.y + size + 50)
+						.attr("text-anchor", "middle")
+						.text("awake")
+						.attr("font-size", "2em")
+						.attr("font-family", "Helvetica")
+						// .attr("font-weight", "bold")
+						.attr("stroke", stateColors[1])
+						.attr("stroke-width", 1)
+						.attr("fill", stateColors[1]);
 
 				
 				// var sleepCell = svg.append("g");
@@ -338,13 +1104,25 @@
 				// drawSleepyFace(sleepCell, size, sleepLoc);
 				
 
-				var sleepLoc = { x: 3 * center.x / 2 - size/2, y: center.y - size/2 };
+				var sleepLoc = { x: center.x / 2 - size/2, y: center.y - size/1.5 };
 				svg.append("svg:image")
 				   .attr('x', sleepLoc.x)
 				   .attr('y', sleepLoc.y)
 				   .attr('width', size)
 				   .attr('height', size)
 				   .attr("xlink:href", images[0])
+
+				svg.append("text")
+						.attr("x", sleepLoc.x + size / 2)
+						.attr("y", sleepLoc.y + size + 50)
+						.attr("text-anchor", "middle")
+						.text("asleep")
+						.attr("font-size", "2em")
+						.attr("font-family", "Helvetica")
+						// .attr("font-weight", "bold")
+						.attr("stroke", stateColors[0])
+						.attr("stroke-width", 1)
+						.attr("fill", stateColors[0]);   
 
 				// var awakeCell = svg.append("g");
 				// awakeCell.append("rect")
@@ -366,7 +1144,7 @@
 
 				var ca = CA(1,2)
 						.numCells(41)
-						.rule(222);
+						.rule(146);
 
 				var curTime = Date.now();
 				var prevTime = Date.now();
@@ -445,15 +1223,104 @@
 
 			}
 
-			function setupStateTimeGrid(svg) {
+			function setupStateTimeGrid(div) {
+
+				// var button = div.append("button").text("Play").on("click", function(){
+				// 	var me = d3.select(this);
+				// 	if (reset) {
+				// 		ca.reset();
+				// 		t = 0;
+				// 		reset = false;
+
+				// 		timeGroups.each(function(a,b){
+				// 			me.selectAll(".st-cells")
+				// 				.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
+				// 				.attr("opacity", b <= t ? 1 : 0);
+				// 		});
+				// 	}
+				// 	else {
+				// 		me.classed("running", !me.classed("running"));
+				// 		if (!me.classed("running")) { me.text("Run"); window.cancelAnimationFrame(raf); }
+				// 		else { me.text("Stop"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
+				// 	}
+				// })
+
+				var svg = div.select("svg");
 
 				var ghostImages = [ "img/asleep-cell-square-ghost.svg", "img/awake-cell-square-ghost.svg" ];
-				var width = 900;
-				var height = 600;
+				var width = 960;
+				var height = 440;
 				svg.attr("width", width).attr("height", height)
 
+				var runs = 87;
+				var rule = 146;
+				var numCells = 192;
+				var ca = CA(1,2)
+						.numCells(numCells)
+						.rule(rule)
+						.run(runs);
+
+				var size = 5;
+				var padding = size * 0.0;
+				var start = 0;
+
+				var timeGroups = svg.append("g").selectAll(".time-groups").data(ca.cellStatesStr())
+					.enter().append("g");
+				
+				// init time and cell groups
+				timeGroups.each(function(d,i){
+					var me = d3.select(this);
+					// console.log(d)
+					me.selectAll(".cell-groups").data(d)
+						// .enter().append("svg:image")
+						.enter().append("rect")
+							.attr("class", "st-cells")
+							.attr("x", function(a,b){ return b * (size + padding) + start; })
+							.attr("y", function(a,b){ return 0 + i * (size + padding); })
+							.attr("rx", 0.5)
+							.attr("width", size)
+							.attr("height", size)
+							// .attr("xlink:href", function(a,b){ return ghostImages[a]; })
+							.attr("fill", function(a,b){ return fillColors[a]; })
+							.attr("stroke", function(a,b){ return stateColors[a]; })
+							.attr("stroke-width", 0.3)
+							// .attr("opacity", t === i ? 1 : 0);
+				})
+				
+			}
+
+
+			function setupStateTimeGridAnim(div) {
+
+				var svg = div.select("svg");
+
+				var ghostImages = [ "img/asleep-cell-square-ghost.svg", "img/awake-cell-square-ghost.svg" ];
+				var width = 960;
+				var height = 480;
+				svg.attr("width", width).attr("height", height).style("border", "1px solid #ddd")
+
+				var button = div.append("button").text("Start").on("click", function(){
+					var me = d3.select(this);
+					if (reset) {
+						ca.reset();
+						t = 0;
+						reset = false;
+
+						timeGroups.each(function(a,b){
+							me.selectAll(".st-cells")
+								.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
+								.attr("opacity", b <= t ? 1 : 0);
+						});
+					}
+					else {
+						me.classed("running", !me.classed("running"));
+						if (!me.classed("running")) { me.text("Start"); window.cancelAnimationFrame(raf); }
+						else { me.text("Pause"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
+					}
+				})
+
 				var runs = 20;
-				var rule = 222;
+				var rule = 146;
 				var numCells = 41;
 				var ca = CA(1,2)
 						.numCells(numCells)
@@ -461,8 +1328,44 @@
 						.run(runs);
 
 				var size = 20;
-				var padding = size * 0.05;
-				var start = 20;
+				var t = 0;
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0, 0.9 * width], 0, 0);
+
+
+				var timeGroups = svg.append("g").selectAll(".time-groups").data(ca.cellStatesStr())
+					.enter().append("g");
+				
+				// init time and cell groups
+				timeGroups.each(function(d,i){
+					var me = d3.select(this);
+					// console.log(d)
+					me.selectAll(".cell-groups").data(d)
+						.enter().append("svg:image")
+							.attr("class", "st-cells")
+							.attr("x", function(a,b){ return 0.05 * width + xscale(b); })
+							.attr("y", function(a,b){ return 30 + i * size; })
+							.attr("width", size)
+							.attr("height", size)
+							.attr("xlink:href", function(a,b){ return images[a]; })
+							.attr("opacity", t === i ? 1 : 0);
+				});
+
+
+				var counterText = div.selectAll(".time-counter-text").data(ca.cellStatesStr())
+					.enter().append("p")
+						.text(function(d,i){ return "t = " + i; })
+						.style("position", "absolute")
+						.style("margin-left", "80%")
+						.style("left", 0)
+						.style("font-size", "0.8em")
+						.style("top", function(d,i){ return 70 + (i * size) + 5 + "px"; })
+						.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
+
+				
+				
 
 				var curTime = Date.now();
 				var prevTime = Date.now();
@@ -472,69 +1375,7 @@
 				var reset = false;
 				var allcellstates = ca.cellStatesStr();
 
-				var timeGroups = svg.append("g").selectAll(".time-groups").data(ca.cellStatesStr())
-					.enter().append("g");
 				
-				// init time and cell groups
-				timeGroups.each(function(d,i){
-					var me = d3.select(this);
-					console.log(d)
-					me.selectAll(".cell-groups").data(d)
-						.enter().append("svg:image")
-							.attr("class", "st-cells")
-							.attr("x", function(a,b){ return b * (size + padding) + start; })
-							.attr("y", function(a,b){ return 70 + i * (size + padding); })
-							.attr("width", size)
-							.attr("height", size)
-							.attr("xlink:href", function(a,b){ return images[a]; })
-							.attr("opacity", t === i ? 1 : 0);
-				});
-
-				var runAndRules = svg.append("g");
-				var runRect = runAndRules.append("rect")
-						.attr({ x: 5, y: 5, rx: 10, width: 100, height: 40, fill: "#333333" })
-						.on("click", function(){
-							if (reset) {
-								ca.reset();
-								t = 0;
-								// counterText.text("t = 0");
-								runtext.text("Run");
-								reset = false;
-
-								timeGroups.each(function(a,b){
-									d3.select(this).selectAll(".st-cells")
-										.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
-										.attr("opacity", b <= t ? 1 : 0);
-								});
-
-								// counterText.each(function(a,b){
-								// 		d3.select(this)
-								// 			.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 50, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
-								// 			.attr("font-size", "16px")
-								// 			.text("t = " + b)
-								// 			.style("pointer-events", "none")
-								// 	})
-
-
-							}
-							else {
-								d3.select(this).classed("running", !d3.select(this).classed("running"));
-								if (!d3.select(this).classed("running")) { runtext.text("Run"); window.cancelAnimationFrame(raf); }
-								else { runtext.text("Stop"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
-							}
-						});
-				var runtext = runAndRules.append("text").attr({ "text-anchor": "middle", x: 55, y: 30, fill: "#ffffff" }).text("Run").style("pointer-events", "none");
-
-				
-				// var counterText = runAndRules.selectAll(".countertext").data(allcellstates)
-				// 	.enter().append("text").each(function(a,b){
-				// 		d3.select(this)
-				// 			.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 65, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
-				// 			.attr("font-size", "16px")
-				// 			.text("t = " + b)
-				// 			.style("pointer-events", "none");
-				// 	})
-
 				var raf;// = window.requestAnimationFrame(run);
 
 				function run() {		
@@ -542,326 +1383,247 @@
 					curTime = Date.now();	
 					eTime += curTime - prevTime;
 					prevTime = curTime;
-					console.log(eTime);
+					// console.log(eTime);
 
 					if (eTime >= delay) {
 						eTime = 0;
 						if (t === runs) { 
-							runtext.text("Reset"); 
+							button.text("Reset"); 
 							window.cancelAnimationFrame(raf);
 							reset = true;
-							runRect.classed("running", false);
+							button.classed("running", false);
 							return; 
 						}
 					
 						ca.run();
 						t++;
 						timeGroups.each(function(a,b){
-							console.log(t);
-							console.log(b);
+							// console.log(t);
+							// console.log(b);
 							d3.select(this).selectAll(".st-cells")
 									.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
 									.attr("opacity", b <= t ? 1 : 0);
 						});
+
+						counterText.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
 						
-						// counterText.filter(function(a,b){ return b === i; }).attr("fill", "#333");
 					}
 					raf = window.requestAnimationFrame(run);
 				}
 			}
-			function setupStateTimeGrid2(svg) {
-				var runs = 20;
-
-				var ca = CA(1,2)
-						.numCells(41)
-						.rule(222)
-						.run(runs);
-
-				var allcellstates = ca.cellStatesStr();
-				var cellGroup = [];
-				for (var k=0; k<allcellstates.length; k++) {
-					cellGroup[k] = svg.append("g").attr("class", "as-cell-group" + k);
-				}
-
-				var curTime = Date.now();
-				var prevTime = Date.now();
-				var eTime = 0;
-				var delay = 1000;
-				var i = 0;
-				var reset = false;
-
-				var width = window.innerWidth * 0.6;
-				var height = 500;
-				var numCells = ca.numCells();
-				var size = 15;
-				var padding = size * 0.2;
-				var start = 35;
 
 
-				var runAndRules = svg.append("g");
-				var runRect = runAndRules.append("rect")
-						.attr({ x: 5, y: 5, rx: 10, width: 100, height: 40, fill: "#333333" })
-						.on("click", function(){
-							if (reset) {
-								ca.reset();
-								i = 0;
-								counterText.text("t = 0");
-								runtext.text("Run");
-								reset = false;
+			function setupSocialSituations(div) {
 
-								for (var k=0; k<allcellstates.length; k++) {
-									cellGroup[k].selectAll("rect").remove();
-								}
+				var width = 960;
+				var height = 280;
+				var svg = div.select("svg");
+				svg.attr("width", width).attr("height", height);
+				// svg.style("border", "1px solid black")
 
-								cellGroup[0].selectAll("rect").data(allcellstates[0]).enter().append("rect").each(function(a,b){
-									var me = d3.select(this);
-									var loc = { x: b * (size + padding) + start,
-														  y: 70 + i * (size + padding) };
+				var configs = [ [1,1,1],
+												[1,1,0],
+												[1,0,1],
+												[1,0,0],
+												[0,1,1],
+												[0,1,0],
+												[0,0,1],
+												[0,0,0] ];
 
-									me.attr("class", "cn-cells cn-cell"+i)
-										.attr("width", size)
-										.attr("height", size)
-										.attr("stroke", stateColors[a])
-										.attr("stroke-width", size / 10)
-										.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
-									// .transition().duration(900)
-										.attr("x", loc.x)
-										.attr("y", loc.y);
-								});
-
-								counterText.each(function(a,b){
-										d3.select(this)
-											.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 50, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
-											.attr("font-size", "16px")
-											.text("t = " + b)
-											.style("pointer-events", "none")
-
-									})
-
-
-							}
-							else {
-								d3.select(this).classed("running", !d3.select(this).classed("running"));
-								if (!d3.select(this).classed("running")) { runtext.text("Run"); window.cancelAnimationFrame(raf); }
-								else { runtext.text("Stop"); eTime = 0; prevTime = Date.now(); raf = window.requestAnimationFrame(run); }
-							}
-						});
-				var runtext = runAndRules.append("text").attr({ "text-anchor": "middle", x: 55, y: 30, fill: "#ffffff" }).text("Run").style("pointer-events", "none");
 
 				
-				var counterText = runAndRules.selectAll(".countertext").data(allcellstates)
-					.enter().append("text").each(function(a,b){
-						d3.select(this)
-							.attr({ "font-weight": "bold", "text-anchor": "middle", x: width - 65, y: 82 + b * (size + padding), fill: b === 0 ? "#333" : "#fff" })
-							.attr("font-size", "16px")
-							.text("t = " + b)
-							.style("pointer-events", "none");
-					})
-						
+				var size = 30;
+				var decRule = 146;
+				var arrRule = padZeros(dec2basek(decRule, 2), 1);
 
-				var raf;// = window.requestAnimationFrame(run);
+				var socsits = svg.selectAll(".ss-cell-groups").data(configs)
+					.enter().append("g")
+						.attr("class", "ss-cell-groups");
 
-				function run(t) {		
-
-					curTime = Date.now();	
-					eTime += curTime - prevTime;
-					prevTime = curTime;
-					console.log(eTime);
-
-					if (eTime >= delay) {
-						eTime = 0;
-						if (i === runs) { 
-							runtext.text("Reset"); 
-							window.cancelAnimationFrame(raf);
-							reset = true;
-							runRect.classed("running", false);
-							return; 
-						}
-					
-						ca.run();
-						i++;
-						cellGroup[i].selectAll("rect").data(allcellstates[i]).enter().append("rect").each(function(a,b){
-							var me = d3.select(this);
-							var loc = { x: b * (size + padding) + start,
-												  y: 70 + i * (size + padding) };
-
-							me.attr("class", "cn-cells cn-cell"+i)
-								.attr("width", size)
-								.attr("height", size)
-								.attr("stroke", stateColors[a])
-								.attr("stroke-width", size / 10)
-								.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
-							// .transition().duration(900)
-								.attr("x", loc.x)
-								.attr("y", loc.y);
-						});
-						counterText.filter(function(a,b){ return b === i; }).attr("fill", "#333");
-					}
-					raf = window.requestAnimationFrame(run);
-				}
-
-				cellGroup[0].selectAll("rect").data(allcellstates[0]).enter().append("rect").each(function(a,b){
+				socsits.each(function(d,i){
 					var me = d3.select(this);
-					var loc = { x: b * (size + padding) + start,
-										  y: 70 + i * (size + padding) };
-
-					me.attr("class", "cn-cells cn-cell"+i)
-						.attr("width", size)
-						.attr("height", size)
-						.attr("stroke", stateColors[a])
-						.attr("stroke-width", size / 10)
-						.attr("fill", Color(stateColors[a]).a(0.5).rgbaString())
-					// .transition().duration(900)
-						.attr("x", loc.x)
-						.attr("y", loc.y);
-				});
-			}
-
-			function setupSocialSituations(svg) {
-				var configs = [ [0,0,0],
-												[0,0,1],
-												[0,1,0],
-												[0,1,1],
-												[1,0,0],
-												[1,0,1],
-												[1,1,0],
-												[1,1,1] ];
-
-
-				var width = window.innerWidth * 0.6;
-				var size = 50;
-
-				var socsits = [];
-				for (var i=0; i<configs.length; i++) {
-					svg.append("text")
-							.attr("x", 15)
-							.attr("y", 95 + (size * 1.4 * i))
-							.attr("text-align", "middle")
-							.attr("text-anchor", "middle")
-							.text(function(a,b){ return (i+1) + ". "; });
-
-					socsits[i] = svg.append("g").selectAll(".ss-cell").data(configs[i])
+					me.append("g").selectAll(".ss-cell").data(d)
 						.enter().append("svg:image")
-							.attr("x", function(a,b){ return 35 + (size * 1.2 * b); })
-							.attr("y", function(a,b){ return 60 + (size * 1.4 * i); })
+							.attr("x", function(a,b){ return 15 + (i * 120) + (size * b); })
+							.attr("y", 0)
 							.attr('width', size)
 							.attr('height', size)
 							.attr("xlink:href", function(a,b){ return images[a]; });
-							
+				})
 
-					svg.append("svg:image")
-							.attr("x", 400)
-							.attr("y", 60 + (size * 1.4 * i))
-					    .attr('width', size)
-					    .attr('height', size)
-					    .attr("xlink:href", images[0])
-					    .classed("sleeping", true)
-					  .on("click", function(){
-					  	var me = d3.select(this);
-					  	me.classed("sleeping", !me.classed("sleeping"));
+				var binarytext = svg.selectAll(".s-plus-1-binary-text").data(arrRule)
+					.enter().append("text")
+						.attr("x", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y", 60)
+				    .attr("font-size", "0em")
+				    .attr("text-anchor", "middle")
+				    .attr("font-weight", "bold")
+				    .text(function(a,b){ return a; })
+				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; });
 
-					  	if (me.classed("sleeping")) me.attr("xlink:href", images[0]);
-					  	else me.attr("xlink:href", images[1]);
-					  })
+				var binarylines = svg.selectAll(".s-lines").data(arrRule)
+					.enter().append("line")
+						.attr("x1", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y1", 65)
+						.attr("x2", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y2", 115)
+						.attr("stroke", function(a,b){ return fillColors[a]; });
 
-					svg.append("path")
-				}
-			}
+				var twosExpRects = svg.selectAll(".twos-exp-rect").data(arrRule)
+					.enter().append("rect")
+						.attr("x", function(a,b){ return 15 + (b * 120) + size * 1.15; })
+						.attr("y", 115)
+						.attr("width", size * 0.7)
+						.attr("height", 20)
+				    .attr("stroke", function(a,b){ return fillColors[a]; })
+				    .attr("fill", "transparent")
+				    .style("cursor", "pointer")
+				    .text(function(a,b){ return "2^" + (arrRule.length-1-b); })
+				  .on("click", function(d,i){
+				  	var me = ruleCells.filter(function(a,b){ return b === i; });
 
-			function drawSleepyFace(g, size, loc) {
-				var face = g.append("g").attr("class", "face");
+				  	me.classed("sleeping", !me.classed("sleeping"));
 
-				var mypath = d3.svg.line()
-	          .x(function(d) { return loc.x + d.x; })
-	          .y(function(d) { return loc.y + d.y; })
-	          .interpolate("basis");
+				  	if (me.classed("sleeping")) me.attr("xlink:href", images[0]);
+				  	else me.attr("xlink:href", images[1]);
 
-	      var lefteyepts = [ { x: 0.8 * size/3, y: size/2.3 },
-	      									 { x: 0.8 * size/3, y: size/1.9 },
-	      									 { x: 1.2 * size/3, y: size/1.9 },
-	      									 { x: 1.2 * size/3, y: size/2.3 } ];
+				  	var bt = binarytext.filter(function(k,j){ return j === i; });
+				  	bt.classed("sleeping", !bt.classed("sleeping"));
 
-				face.append("path").attr("class", "left-eye")
-						.attr("d", mypath(lefteyepts))
-						.attr("stroke", "#444")
-						.attr("stroke-width", 2)
-						.attr("fill", "transparent");
+				  	if (bt.classed("sleeping")) {
+				  		bt.text("0");
+				  	} 
+				  	else {
+				  		bt.text("1");
+				  	}
 
-				var righteyepts = [ { x: 1.8 * size/3, y: size/2.3 },
-													 { x: 1.8 * size/3, y: size/1.9 },
-													 { x: 2.2 * size/3, y: size/1.9 },
-													 { x: 2.2 * size/3, y: size/2.3 } ];
+				  	binarytext.each(function(k,j){
+				  		var sleeping = d3.select(this).classed("sleeping");
+				  		arrRule[j] = sleeping ? 0 : 1;
+				  	})
 
-				face.append("path").attr("class", "left-eye")
-						.attr("d", mypath(righteyepts))
-						.attr("stroke", "#444")
-						.attr("stroke-width", 2)
-						.attr("fill", "transparent");
+				  	binarylines.data(arrRule).attr("stroke", function(a,b){ return fillColors[a]; });
+				  	binarylines2.data(arrRule).attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; });
+				  	twosExpRects.data(arrRule).attr("stroke", function(a,b){ return fillColors[a]; });
+				  	twosExp.data(arrRule).attr("fill", function(a,b){ return fillColors[a]; });
+				  	hlines.data(arrRule).attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; })
+
+
+				  	console.log(b);
+				  	// console.log(arrRule.reverse());
+				  	decRule = basek2dec(arrRule, 2);
+				  	ruletext.text("Rule: " + decRule);
+				  });
+
+
+				var twosExp = svg.selectAll(".twos-exp").data(arrRule)
+					.enter().append("text")
+						.attr("x", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y", 130)
+				    .attr("font-size", "0.75em")
+				    .attr("text-anchor", "middle")
+				    .attr("fill", function(a,b){ return fillColors[a]; })
+				    .style("pointer-events", "none")
+				    .text(function(a,b){ return "2^" + (arrRule.length-1-b); }); 
+ 
+
+				var binarylines2 = svg.selectAll(".s-lines2").data(arrRule)
+					.enter().append("line")
+						.attr("x1", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y1", 135)
+						.attr("x2", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y2", 195)
+						.attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; });
+
+				var hlines = svg.selectAll(".connection-lines").data(arrRule)
+					.enter().append("line")
+						.attr("x1", function(a,b){ return 15 + (b * 120) + size + size/2; })
+						.attr("y1", 195)
+						.attr("x2", 15 + size + size/2 + (7 * 120)/2)
+						.attr("y2", 195)
+						.attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; });
+
+				var vline = svg.append("line")
+						.attr("x1", 15 + size + size/2 + (7 * 60))
+						.attr("y1", 195)
+						.attr("x2", 15 + size + size/2 + (7 * 60))
+						.attr("y2", 230)
+						.attr("stroke", fillColors[1]);		
+
+				var ruletext = svg.append("text")
+						.attr("x", 15 + size + size/2 + (7 * 60))
+						.attr("y", 260)
+						.attr("font-size", "1.35em")
+						.attr("text-anchor", "middle")
+						.attr("font-weight", "bold")
+						.style("pointer-events", "none")
+						.text("Rule: " + decRule)				
+
+
+
+				var ruleCells = svg.selectAll(".s-plus-1-cell").data(arrRule)
+					.enter().append("svg:image")
+						.attr("x", function(a,b){ return 15 + (b * 120) + size; })
+						.attr("y", 40)
+				    .attr('width', size)
+				    .attr('height', size)
+				    .attr("xlink:href", function(a,b){ return images[a]; })
+				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; })
+				    .style("cursor", "pointer")
+				  .on("click", function(a,b){
+				  	var me = d3.select(this);
+				  	me.classed("sleeping", !me.classed("sleeping"));
+
+				  	if (me.classed("sleeping")) me.attr("xlink:href", images[0]);
+				  	else me.attr("xlink:href", images[1]);
+
+				  	var bt = binarytext.filter(function(k,j){ return j === b; });
+				  	bt.classed("sleeping", !bt.classed("sleeping"));
+
+				  	if (bt.classed("sleeping")) {
+				  		bt.text("0");
+				  	} 
+				  	else {
+				  		bt.text("1");
+				  	}
+
+				  	binarytext.each(function(k,j){
+				  		var sleeping = d3.select(this).classed("sleeping");
+				  		arrRule[j] = sleeping ? 0 : 1;
+				  	})
+
+				  	binarylines.data(arrRule).attr("stroke", function(a,b){ return fillColors[a]; });
+				  	binarylines2.data(arrRule).attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; });
+				  	twosExpRects.data(arrRule).attr("stroke", function(a,b){ return fillColors[a]; });
+				  	twosExp.data(arrRule).attr("fill", function(a,b){ return fillColors[a]; });
+				  	hlines.data(arrRule).attr("stroke", function(a,b){ return a === 0 ? "transparent" : fillColors[1]; })
+
+
+				  	console.log(b);
+				  	// console.log(arrRule.reverse());
+				  	decRule = basek2dec(arrRule, 2);
+				  	ruletext.text("Rule: " + decRule);
+				  })
+
 				
+				// var xtimes = svg.selectAll(".twos-exp").data([7,6,5,4,3,2,1,0])
+				// 	.enter().append("text")
+				// 		.attr("x", function(a,b){ return 15 + (b * 120) + size + size/2; })
+				// 		.attr("y", 200)
+				//     .attr("font-size", "1em")
+				//     .attr("text-anchor", "middle")
+				//     .text(function(a,b){ return "x"; });
 
-
-				var points = [ { x: 1.1 * size/3, y: size/1.5 }, 
-											 { x: 1.2 * size/3, y: size/1.4 },
-											 { x: 1.8 * size/3, y: size/1.4 },
-											 { x: 1.9*size/3, y: size/1.5 } ];
-				
-
-				face.append("path").attr("class", "mouth")
-						.attr("d", mypath(points))
-						.attr("stroke", "#444")
-						.attr("stroke-width", 2)
-						.attr("fill", "transparent");
-
-				face.append("text")
-						.attr("x", loc.x + size - 4)
-						.attr("y", loc.y + 7)
-						.text("z")
-						.attr("font-size", size/4.5 + "px")
-						.attr("fill", Color("#000").a(0.5).rgbaString());
-
-				face.append("text")
-						.attr("x", loc.x + size + 3)
-						.attr("y", loc.y)
-						.text("z")
-						.attr("font-size", size/4 + "px")
-						.attr("fill", Color("#000").a(0.4).rgbaString());
-
-				face.append("text")
-						.attr("x", loc.x + size + 6)
-						.attr("y", loc.y + - 10)
-						.text("z")
-						.attr("font-size", size/3.5 + "px")
-						.attr("fill", Color("#000").a(0.3).rgbaString());
+				// var twosExp = svg.selectAll(".twos-exp").data([7,6,5,4,3,2,1,0])
+				// 	.enter().append("text")
+				// 		.attr("x", function(a,b){ return 15 + (b * 120) + size + size/2; })
+				// 		.attr("y", 220)
+				//     .attr("font-size", "1em")
+				//     .attr("text-anchor", "middle")
+				//     .text(function(a,b){ return "2^" + a; });
 			}
 
-			function drawAwakeFace(g, size, loc) {
-				var face = g.append("g").attr("class", "face");
-				face.append("circle").attr("class", "left-eye")
-						.attr("cx", loc.x + size/3)
-						.attr("cy", loc.y + size/2)
-						.attr("r", size/20)
-						.attr("fill", "#444");
-
-				face.append("circle").attr("class", "right-eye")
-						.attr("cx", loc.x + 2*size/3)
-						.attr("cy", loc.y + size/2)
-						.attr("r", size/20)
-						.attr("fill", "#444");
-
-
-				var points = [{ x: size/3, y: size/1.5 }, 
-											{ x: 1.1 * size/3, y: size/1.2 },
-											{ x: 1.9 * size/3, y: size/1.2 },
-											{ x: 2*size/3, y: size/1.5 }];
-				var mypath = d3.svg.line()
-	          .x(function(d) { return loc.x + d.x; })
-	          .y(function(d) { return loc.y + d.y; })
-	          .interpolate("basis");
-
-				face.append("path").attr("class", "mouth")
-						.attr("d", mypath(points))
-						.attr("fill", "#444");
-			}
+			
 			
 </script>
 	
