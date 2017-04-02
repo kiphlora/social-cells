@@ -202,3 +202,24 @@ a {
 .awake-cell {
 	color: #48c448;
 }
+.section-intro {
+	text-align: center;
+	font-weight: 400;
+	letter-spacing: 1px;
+	color: #999;
+	font-size: 24px;
+	margin: 100px 0;
+}
+
+
+.section-intro2 {
+	font-weight: 300;
+	color: #999;
+	font-size: 24px;
+	margin-top: 100px;
+}
+
+h3 {
+	color: #333;
+	font-weight: 500;
+}
