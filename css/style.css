@@ -223,3 +223,8 @@ h3 {
 	color: #333;
 	font-weight: 500;
 }
+
+.sandbox-instructions {
+	border: 1px solid #eee;
+	box-shadow: 5px 5px 8px #aaa;
+}
