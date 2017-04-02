@@ -38,14 +38,14 @@ body, html {
 
 .interactive {
 	width: 100%;
-	background: #fff;
+	background: #eee;
 	overflow: hidden;
 }
 
 .interactive svg {
 	display: block;
 	margin: 25px auto;
-	border: 1px solid #fff;
+	border: 1px solid #eee;
 }
 
 .instruction {
@@ -92,6 +92,11 @@ body, html {
 	color: #999;
 }
 
+.footer > p, .footer > ul {
+	margin: 10px auto;
+	width:960px;
+}
+
 .header, .footer{
 	width:100%; height:550px;
 	overflow: hidden;
@@ -110,4 +115,90 @@ body, html {
 	left:-640px; top:-275px;
 	width:1280px; height:550px;
 	border: none;
+}
+
+a {
+	color: #999;
+}
+
+.notes {
+	color: #48c448;
+}
+
+.footer p {
+	font-size: 16px;
+}
+
+.footer p:first-child {
+	font-size: 28px;
+	text-align: center;
+
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+.footer {
+	height: auto;
+  padding-top: 50px;
+	padding-bottom: 100px;
+}
+
+.wrapper {
+	position: relative;
+	width: 960px;
+	margin: 0 auto;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid #eee;
+	padding: 15px;
+}
+
+.wrapper label {
+  font-size: 12px;
+}
+
+#sandbox-controls {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+
+
+.wrapper #select-box {
+  position: absolute;
+	right: 0px;
+	top: 40px;
+}
+
+.wrapper #select-box {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+}
+.wrapper #select-box label {
+	font-size: 9px;
+	letter-spacing: 0.5px;
+	font-weight: 400;
+	padding: 0;
+	margin: 0;
+	margin-left: 0px;
+	line-height: 12px;
+}
+.wrapper #select-box select {
+	margin-left: 3px;
+	width: 135px;
+	padding: 1px;
+	padding-left: 3px;
+	margin: 0;
+}
+
+.asleep-cell {
+	color: #a6a6a6;
+}
+
+.awake-cell {
+	color: #48c448;
 }
