@@ -618,4 +618,13 @@ function areArraysEqual(arr1, arr2) {
 	return true;
 }
 
+function initArray(length, value) {
+	if (value === undefined) value = 0;
+	var a = [];
+	for (var i=0; i<length; i++) {
+		a[i] = value;
+	}
+	return a;
+}
+
 
