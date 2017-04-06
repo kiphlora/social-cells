@@ -77,13 +77,13 @@
 			</p> -->
 
 			<p>
-				Each cell determines its <span class="notes">next state (t+1)</span> by using information it has access to in its <span class="notes">current state (t)</span>. 
+				Each cell uses information available to it in the <span class="notes">current step</span> to calculate its state for the <span class="notes">next step</span>. 
 			</p>
 			<div>
 				
 			</div>
 				<p>
-					In order to better see and understand this discrete stepping concept, press the "Start" button in the interactive below to watch as the cells change their states each second.
+					In order to better see and understand this discrete stepping concept, press the "Start" button in the interactive below. The cells will transition to the next step each second for twenty seconds.
 				</p>
 				
 			</div>
@@ -510,6 +510,282 @@
 			}
 
 			function setupChangingOfTheStates(div) {
+
+				var ghostImages = [ "img/asleep-cell-square-ghost.svg", "img/awake-cell-square-ghost.svg" ];
+
+				var width = 960;
+				var height = 600;
+				var maxSteps = 15;
+
+				var svg = div.select("svg")
+						.attr("width", width)
+						.attr("height", height)
+						// .style("border", "1px solid #ddd");
+
+				var ca = CA(1,2)
+						.numCells(25)
+						.rule(mainrule)
+						.run(maxSteps);
+						// .randomizeStates();
+
+				var yscale = d3.scale.ordinal()
+						.domain(d3.range(maxSteps+1))
+						.rangeRoundBands([0.05*height, 0.95*height], 0, 0);
+
+				var xscale = d3.scale.ordinal()
+						.domain(d3.range(ca.numCells()))
+						.rangeRoundBands([0* width, 0.85*width], 0, 0);
+
+				var currentRow = 0;
+				var tracker = initArray(ca.numCells(), 0);
+
+
+
+				var size = yscale.rangeBand();
+				
+
+				var cellRows = svg.selectAll(".transition-cell-rows").data(ca.cellStatesStr())
+					.enter().append("g");
+
+				cellRows.each(function(d,i){
+					d3.select(this).selectAll(".transition-cells").data(d)
+						.enter().append("svg:image")
+							.attr("x", function(a,b){ return xscale(b); })
+							.attr("y", function(a,b){ return yscale(i); })
+							.attr("width", size)
+							.attr("height", size)
+							.attr("xlink:href", function(a,b){ return images[a]; })
+							.style("opacity", 0)
+						.on("mouseover", function(a,b){
+
+							socsits.selectAll("rect").style("opacity", 0);
+
+							if (i <= currentRow) {
+								nextcells.filter(function(k,j){ return j === b; }).style("opacity", 1);
+								var left = cells.filter(function(k,j){ return j === mod(b-1, ca.numCells()); });
+								var right = cells.filter(function(k,j){ return j === mod(b+1, ca.numCells()); });
+								var me = d3.select(this);
+
+								me.attr("xlink:href", ghostImages[a]);
+
+								var neighborhood = [+left.datum(), +a, +right.datum()];
+								var soc = socsits.filter(function(k,j){ return areArraysEqual(k, neighborhood); });
+								soc.selectAll("rect").style("opacity", 1);
+
+								tracker[b] = 1;
+								if (sum(tracker) === ca.numCells()) {
+									tracker = initArray(ca.numCells(), 0);
+									currentRow++;
+									if (currentRow < maxSteps) {
+										cells.on("mouseover", null);
+										cr = cellRows.filter(function(k,j){ return j === currentRow; });
+										cells = cr.selectAll("image").style("opacity", 1);
+										nr = cellRows.filter(function(k,j){ return j === (currentRow+1); });
+										nextcells = nr.selectAll("image");
+									} 
+								}
+							}
+							
+						});
+				});
+
+				var cr = cellRows.filter(function(d,i){ return i === currentRow; });
+				var cells = cr.selectAll("image").style("opacity", 1);
+
+				var nr = cellRows.filter(function(d,i){ return i === (currentRow+1); });
+				var nextcells = nr.selectAll("image");
+
+				cells
+
+				
+
+
+				
+
+				// var cells = svg.append("g").selectAll(".cots-cells").data(ca.currentCellStates())
+				// 		.enter().append("g").each(function(d,i){
+							
+				// 			d3.select(this).append("svg:image")
+				// 					.attr("class", "cots-cells cots-cell"+i)
+				// 					.attr("x", xscale(i))
+				// 					.attr("y", yscale(currentRow))
+				// 					.attr("width", size)
+				// 					.attr("height", size)
+				// 					.attr("xlink:href", images[d])
+				// 					.style("opacity", 1);
+
+				// 			// d3.select(this).append("rect")
+				// 			// 		.attr("class", "hat")
+				// 			// 		.attr("x", xscale(i) + (size*0.25))
+				// 			// 		.attr("y", height/2 - size/2 - size/2 - size/1.5)
+				// 			// 		.attr("rx", 0)
+				// 			// 		.attr("width", size/2)
+				// 			// 		.attr("height", size/1.5)
+				// 			// 		.attr("stroke", "#333")
+				// 			// 		.attr("stroke-width", 2.5)
+				// 			// 		.style("opacity", 0);
+
+				// 			// d3.select(this).append("rect")
+				// 			// 	.attr("x", xscale(i))
+				// 			// 	.attr("y", height/2 - size/2 - size/2)
+				// 			// 	.attr("width", size)
+				// 			// 	.attr("height", 3)
+				// 			// 	.attr("fill", "#333")
+				// 			// 	.style("opacity", 0);
+
+				// 			// d3.select(this).append("rect")
+				// 			// 	.attr("x", xscale(i) + size*0.25)
+				// 			// 	.attr("y", height/2 - size/2 - size/2 - 0.2 * size)
+				// 			// 	.attr("width", size/2)
+				// 			// 	.attr("height", 0.2 * size)
+				// 			// 	.attr("fill", "#fff")
+				// 			// 	.style("opacity", 0);
+
+				// 		})
+						// .on("mouseover", function(d,i){
+						// 	// reset next cells and hats
+						// 	// nextcells.style("opacity", 0);
+						// 	// cells.selectAll("rect").style("opacity", 0);
+						// 	socsits.selectAll("rect").style("opacity", 0);
+
+						// 	nextcells.filter(function(a,b){ return i === b; }).style("opacity", 1);
+						// 	var left = cells.filter(function(a,b){ return b === mod(i-1, ca.numCells()); });
+						// 	var right = cells.filter(function(a,b){ return b === mod(i+1, ca.numCells()); });
+						// 	var me = d3.select(this);
+
+						// 	// left.selectAll("rect").style("opacity", 1);
+						// 	// left.select(".hat").attr("fill", "#333");
+
+						// 	// me.selectAll("rect").style("opacity", 1);
+						// 	// me.select(".hat").attr("fill", "#333");
+						// 	me.select("image").attr("xlink:href", ghostImages[d]);
+
+						// 	// right.selectAll("rect").style("opacity", 1);
+						// 	// right.select(".hat").attr("fill", "#333");
+
+						// 	var neighborhood = [left.datum(), d, right.datum()];
+
+						// 	var soc = socsits.filter(function(a,b){ return areArraysEqual(a, neighborhood); });
+						// 	soc.selectAll("rect").style("opacity", 1);
+						// })
+						// .on("mouseout", function(d,i){
+						// 	nextcells.filter(function(a,b){ return i === b; }).style("opacity", 0);
+						// 	var left = cells.filter(function(a,b){ return b === mod(i-1, ca.numCells()); });
+						// 	var right = cells.filter(function(a,b){ return b === mod(i+1, ca.numCells()); });
+						// 	var me = d3.select(this);
+
+						// 	left.selectAll("rect").style("opacity", 0);
+						// 	me.selectAll("rect").style("opacity", 0);
+						// 	right.selectAll("rect").style("opacity", 0);
+
+						// 	socsits.selectAll("rect").style("opacity", 0);
+						// })
+							
+
+				// var nextcells = svg.append("g").selectAll(".cots-next-cells").data(ca.run().currentCellStates())
+				// 		.enter().append("svg:image")
+				// 			.attr("class", function(d,i){ return "cots-next-cells cots-next-cell"+i; })
+				// 			.attr("x", function(d,i){ return xscale(i); })
+				// 			.attr("y", yscale(currentRow+1))
+				// 			.attr("width", size)
+				// 			.attr("height", size)
+				// 			.attr("xlink:href", function(d,i){ return images[d]; })
+				// 			.style("opacity", 0);
+
+
+				var vline = svg.append("line")
+						.attr("x1", 0.885*width)
+						.attr("y1", 0.05*height)
+						.attr("x2", 0.885*width)
+						.attr("y2", 0.95*height)
+						.attr("stroke", "#ddd")
+
+
+
+				var configs = [ [1,1,1],
+												[1,1,0],
+												[1,0,1],
+												[1,0,0],
+												[0,1,1],
+												[0,1,0],
+												[0,0,1],
+												[0,0,0] ];
+
+				var arrRule = ca.rule(mainrule).ruleComponents();
+
+				var rulesize = 18;
+				// var arrRule = padZeros(dec2basek(decRule, 2), 1);
+
+				var socsits = svg.selectAll(".cots-ss-cell-groups").data(configs)
+					.enter().append("g")
+						.attr("class", "cots-ss-cell-groups");
+
+				// var ys = [rulesize*2, 3*rulesize*2, 5*rulesize*2, 7*rulesize*2];
+				socsits.each(function(d,i){
+					var me = d3.select(this);
+
+					me.append("g").selectAll(".cots-ss-cell").data(d)
+						.enter().append("g")
+						.each(function(a,b){
+							d3.select(this).append("svg:image")
+									.attr("x", 0.925 * width + (b * rulesize))
+									.attr("y", 80 + rulesize * i * 3.5)
+									.attr('width', rulesize)
+									.attr('height', rulesize)
+									.attr("xlink:href", images[a]);
+
+							d3.select(this).append("rect")
+									.attr("x", 0.925 * width + (b * rulesize) + (rulesize * 0.25))
+									.attr("y", 80 + rulesize * i * 3.5 - rulesize/1.5)
+									.attr("rx", 0)
+									.attr("width", rulesize/2)
+									.attr("height", rulesize/1.5)
+									.attr("fill", "#333")
+									.attr("stroke", "#333")
+									.attr("stroke-width", 1.5)
+									.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", 0.925 * width + (b * rulesize))
+								.attr("y", 80 + rulesize * i * 3.5 - 1)
+								.attr("width", rulesize)
+								.attr("height", 2)
+								.attr("fill", "#333")
+								.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", 0.925 * width + (b * rulesize) + 0.25*rulesize)
+								.attr("y", 80 + rulesize * i * 3.5 - 0.25*rulesize)
+								.attr("width", rulesize/2)
+								.attr("height", 0.2 * rulesize)
+								.attr("fill", "#fff")
+								.style("opacity", 0);
+						})
+					
+					
+				})
+
+				var ruleCells = svg.selectAll(".s-plus-1-cell").data(arrRule)
+					.enter().append("svg:image")
+						.attr("x", function(a,b){ return 0.925 * width + rulesize; })
+						.attr("y", function(a,b){ return 80 + (rulesize * b * 3.5)+rulesize; })
+				    .attr('width', rulesize)
+				    .attr('height', rulesize)
+				    .attr("xlink:href", function(a,b){ return images[a]; })
+				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; })
+				   
+				var ruletext = svg.append("text")
+						.attr("x", 0.925 * width + rulesize + rulesize /2)
+						.attr("y", 50)
+						.text("Rule: " + ca.rule())
+						.attr("text-anchor", "middle")
+
+			}
+
+			function setupChangingOfTheStates2(div) {
+
+				var ghostImages = [ "img/asleep-cell-square-ghost.svg", "img/awake-cell-square-ghost.svg" ];
+
 				var width = 960;
 				var height = 600;
 				var maxSteps = 20;
@@ -519,12 +795,19 @@
 						.attr("height", height)
 						// .style("border", "1px solid #ddd");
 
+				var yscale = d3.scale.ordinal()
+						.domain(d3.range(maxSteps+1))
+						.range([0.05*height, 0.95*height], 0, 0);
+
+
+
+
 				var size = 35;
 
 				var ca = CA(1,2)
 						.numCells(21)
 						.rule(mainrule)
-						.randomizeStates();
+						// .randomizeStates();
 
 
 				var xscale = d3.scale.ordinal()
@@ -562,10 +845,18 @@
 								.attr("fill", "#333")
 								.style("opacity", 0);
 
+							d3.select(this).append("rect")
+								.attr("x", xscale(i) + size*0.25)
+								.attr("y", height/2 - size/2 - size/2 - 0.2 * size)
+								.attr("width", size/2)
+								.attr("height", 0.2 * size)
+								.attr("fill", "#fff")
+								.style("opacity", 0);
+
 						})
 						.on("mouseover", function(d,i){
 							// reset next cells and hats
-							nextcells.style("opacity", 0);
+							// nextcells.style("opacity", 0);
 							cells.selectAll("rect").style("opacity", 0);
 							socsits.selectAll("rect").style("opacity", 0);
 
@@ -578,10 +869,12 @@
 							left.select(".hat").attr("fill", "#333");
 
 							me.selectAll("rect").style("opacity", 1);
-							me.select(".hat").attr("fill", "#999");
+							me.select(".hat").attr("fill", "#333");
+							var happy = me.select("image").attr("xlink:href", ghostImages[d]);
+							console.log(happy);
 
 							right.selectAll("rect").style("opacity", 1);
-							right.select(".hat").attr("fill", "#ddd");
+							right.select(".hat").attr("fill", "#333");
 
 							var neighborhood = [left.datum(), d, right.datum()];
 
@@ -660,7 +953,7 @@
 									.attr("rx", 0)
 									.attr("width", rulesize/2)
 									.attr("height", rulesize/1.5)
-									.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+									.attr("fill", "#333")
 									.attr("stroke", "#333")
 									.attr("stroke-width", 1.5)
 									.style("opacity", 0);
@@ -671,6 +964,14 @@
 								.attr("width", rulesize)
 								.attr("height", 2)
 								.attr("fill", "#333")
+								.style("opacity", 0);
+
+							d3.select(this).append("rect")
+								.attr("x", 0.875 * width + (b * rulesize) + 0.25*rulesize)
+								.attr("y", 80 + rulesize * i * 3.5 - 0.25*rulesize)
+								.attr("width", rulesize/2)
+								.attr("height", 0.2 * rulesize)
+								.attr("fill", "#fff")
 								.style("opacity", 0);
 						})
 					
@@ -685,27 +986,27 @@
 				    .attr('height', rulesize)
 				    .attr("xlink:href", function(a,b){ return images[a]; })
 				    .classed("sleeping", function(a,b){ return a === 0 ? true : false; })
-				    .style("cursor", "pointer")
-				   .on("click", function(d,i){
-				   		var me = d3.select(this);
-				   		me.classed("sleeping", !me.classed("sleeping"));
+				    // .style("cursor", "pointer")
+				   // .on("click", function(d,i){
+				   // 		var me = d3.select(this);
+				   // 		me.classed("sleeping", !me.classed("sleeping"));
 
-				   		ruleCells.each(function(a,b){
-					  		var sleeping = d3.select(this).classed("sleeping");
-				  			arrRule[b] = sleeping ? 0 : 1;
-				   		});
+				   // 		ruleCells.each(function(a,b){
+					  // 		var sleeping = d3.select(this).classed("sleeping");
+				  	// 		arrRule[b] = sleeping ? 0 : 1;
+				   // 		});
 
-				   		var csstr = ca.cellStatesStr()[0];
-				   		ca.reset();
-				   		ca.rule(basek2dec(arrRule, 2)).customStates(csstr);
+				   // 		var csstr = ca.cellStatesStr()[0];
+				   // 		ca.reset();
+				   // 		ca.rule(basek2dec(arrRule, 2)).customStates(csstr);
 
-				   		nextcells.data(ca.run().currentCellStates()).attr("xlink:href", function(a,b){ return images[a]; });
-				   		ruleCells.data(ca.ruleComponents()).attr("xlink:href", function(a,b){ return images[a]; });
+				   // 		nextcells.data(ca.run().currentCellStates()).attr("xlink:href", function(a,b){ return images[a]; });
+				   // 		ruleCells.data(ca.ruleComponents()).attr("xlink:href", function(a,b){ return images[a]; });
 
-				   		ruletext.text("Rule: " + ca.rule());
+				   // 		ruletext.text("Rule: " + ca.rule());
 
 
-				   })
+				   // })
 
 				var ruletext = svg.append("text")
 						.attr("x", 0.875 * width + rulesize + rulesize /2)
