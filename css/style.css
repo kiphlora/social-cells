@@ -18,13 +18,13 @@ body, html {
 	background: #000;
 	color: #fff;
 }
-	#sandbox-controls {
-		display: flex;
-	}
+#sandbox-controls {
+	display: flex;
+}
 
-	label, input, button, select {
-		cursor: pointer;
-	}
+label, input, button, select {
+	cursor: pointer;
+}
 
 .container {
 	display: flex;
@@ -59,13 +59,14 @@ body, html {
 		background:url(intro_banner.png);
 		width:1280px; height:550px;
 	}
-	.header > p {
-		color: #999;
-		text-align: center;
-		width: 800px;
-		font-weight: 100;
-		letter-spacing: 2px;
-	}
+	
+.header > p {
+	color: #999;
+	text-align: center;
+	width: 800px;
+	font-weight: 100;
+	letter-spacing: 2px;
+}
 
 .header {
 	display: flex;
