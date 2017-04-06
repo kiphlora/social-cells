@@ -568,6 +568,9 @@
 							nextcells.style("opacity", 0);
 							cells.selectAll("rect").style("opacity", 0);
 							socsits.selectAll("rect").style("opacity", 0);
+							cells.selectAll(".hat").attr("fill", "#333")
+									.attr("y", height/2 - size/2 - size/2 - size/1.5)
+									.attr("height", size/1.5);
 
 							nextcells.filter(function(a,b){ return i === b; }).style("opacity", 1);
 							var left = cells.filter(function(a,b){ return b === mod(i-1, ca.numCells()); });
@@ -578,10 +581,12 @@
 							left.select(".hat").attr("fill", "#333");
 
 							me.selectAll("rect").style("opacity", 1);
-							me.select(".hat").attr("fill", "#999");
+							me.select(".hat").attr("fill", "#333")
+									.attr("y", height/2 - size/2 - size/2 - size)
+									.attr("height", size);
 
 							right.selectAll("rect").style("opacity", 1);
-							right.select(".hat").attr("fill", "#ddd");
+							right.select(".hat").attr("fill", "#333");
 
 							var neighborhood = [left.datum(), d, right.datum()];
 
@@ -656,11 +661,11 @@
 
 							d3.select(this).append("rect")
 									.attr("x", 0.875 * width + (b * rulesize) + (rulesize * 0.25))
-									.attr("y", 80 + rulesize * i * 3.5 - rulesize/1.5)
+									.attr("y", 80 + rulesize * i * 3.5 - (b === 1 ? rulesize : rulesize/1.5))
 									.attr("rx", 0)
 									.attr("width", rulesize/2)
-									.attr("height", rulesize/1.5)
-									.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+									.attr("height", b === 1 ? rulesize : rulesize/1.5)
+									.attr("fill", b === 0 ? "#333" : b === 1 ? "#333" : "#333")
 									.attr("stroke", "#333")
 									.attr("stroke-width", 1.5)
 									.style("opacity", 0);
@@ -793,11 +798,11 @@
 
 									me.append("rect")
 										.attr("x", loc.x + size/4)
-										.attr("y", loc.y - size/1.5 + 1)
+										.attr("y", loc.y - (b === 1 ? size : size/1.5) + 1)
 										.attr("rx", 0)
 										.attr("width", size/2)
-										.attr("height", size/1.5)
-										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("height", b === 1 ? size : size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#333" : "#333")
 										.attr("stroke", "#333")
 										.attr("stroke-width", 2.5);
 
@@ -811,11 +816,11 @@
 								loc = rowcellLocs[mod(i+a, cellLocs.length)];
 									me.append("rect")
 										.attr("x", loc.x + size/4)
-										.attr("y", loc.y - size/1.5 + 1)
+										.attr("y", loc.y - (b === 1 ? size : size/1.5) + 1)
 										.attr("rx", 0)
 										.attr("width", size/2)
-										.attr("height", size/1.5)
-										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("height", b === 1 ? size : size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#333" : "#333")
 										.attr("stroke", "#333")
 										.attr("stroke-width", 2.5)
 
@@ -869,11 +874,11 @@
 
 									me.append("rect")
 										.attr("x", loc.x + size/4)
-										.attr("y", loc.y - size/1.5 + 1)
+										.attr("y", loc.y - (b === 1 ?  size : size/1.5) + 1)
 										.attr("rx", 0)
 										.attr("width", size/2)
-										.attr("height", size/1.5)
-										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("height", b === 1 ? size : size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#333" : "#333")
 										.attr("stroke", "#333")
 										.attr("stroke-width", 2.5);
 
@@ -887,11 +892,11 @@
 								loc = rowcellLocs[mod(i+a, cellLocs.length)];
 									me.append("rect")
 										.attr("x", loc.x + size/4)
-										.attr("y", loc.y - size/1.5 + 1)
+										.attr("y", loc.y - (b === 1 ? size : size/1.5) + 1)
 										.attr("rx", 0)
 										.attr("width", size/2)
-										.attr("height", size/1.5)
-										.attr("fill", b === 0 ? "#333" : b === 1 ? "#999" : "#ddd")
+										.attr("height", b === 1 ? size : size/1.5)
+										.attr("fill", b === 0 ? "#333" : b === 1 ? "#333" : "#333")
 										.attr("stroke", "#333")
 										.attr("stroke-width", 2.5)
 
