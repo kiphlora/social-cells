@@ -89,7 +89,10 @@
 			</div>
 		
 		<div id="discrete-time-single-row" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="discrete-time-single-row-button" class="sc-button">Start</button>
+				<svg></svg>
+			</div>
 		</div>
 		
 		<div class="section">
@@ -102,7 +105,10 @@
 		</div>
 
 		<div id="state-time-grid-animated" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="state-time-grid-anim-button" class="sc-button">Start</button>
+				<svg></svg>
+			</div>
 		</div>
 
 		<div class="section">
@@ -179,15 +185,16 @@
 
 		<div id="ca-sandbox" class="interactive">
 			<div class="wrapper">
-				<svg></svg>
-				<!-- <div id="sandbox-controls"> -->
-					<div id="check-box"><label><input type="checkbox" id="init-state-checkbox">Randomize Seeds</label></div>
+				<div id="sandbox-controls">
+					<button id="random-rule-button" class="sc-button">Random Rule</button>
+					<button id="check-box-button-random-seeds">Randomize Seeds</button>
+					<button id="refresh-button" class="sc-button">Refresh</button>
 					<div id="select-box">
 						<label>Choose Rule</label>
-						<select name="rules" id="select-rule">
-						</select>
+						<select name="rules" id="select-rule"></select>
 					</div>
-				<!-- </div> -->
+				</div>
+				<svg></svg>
 			</div>
 		</div>
 
@@ -447,7 +454,7 @@
 				// 		.text("Rule: " + ca.rule())
 				// 		.attr("text-anchor", "middle")
 
-				var randomRuleButton = div.append("button").text("Random rule").on("click", function(){
+				var randomRuleButton = div.select("#random-rule-button").on("click", function(){
 					ca.reset();
 					ca.randomRule();
 					arrRule = ca.ruleComponents();
@@ -468,7 +475,7 @@
 
 				});
 
-				var refreshButton = div.append("button").text("Refresh").on("click", function(){
+				var refreshButton = div.select("#refresh-button").on("click", function(){
 					ca.reset();
 					
 					if (randomInit) ca.randomizeStates();
@@ -480,11 +487,12 @@
 								.attr("fill", function(a,b){ return fillColors[a]; })
 								.attr("stroke", function(a,b){ return stateColors[a]; })
 					});
-				})
+				});
 
-				var randomStart = div.select("#init-state-checkbox");
-				randomStart.property("checked", "");
-				randomStart.on("change", function(){
+				var randomStart = div.select("#check-box-button-random-seeds");
+				randomStart.classed("random-seeds-checked", false);
+				randomStart.on("click", function(){
+					d3.select(this).classed("random-seeds-checked", !d3.select(this).classed("random-seeds-checked"));
 					randomInit = !randomInit;
 
 					ca.reset();
@@ -935,7 +943,7 @@
 							.attr("height", size)
 							.attr("xlink:href", function(d,i){ return images[d]; });
 
-				var button = div.append("button").text("Start").on("click", function(){
+				var button = div.select("#discrete-time-single-row-button").on("click", function(){
 					var me = d3.select(this);
 					if (reset) {
 						ca.reset();
@@ -954,9 +962,9 @@
 
 				var counterText = div.append("p").text("t = 0")
 						.style("position", "absolute")
-						.style("right", "50px")
+						.style("right", "60px")
 						.style("font-size", "12px")
-						.style("top", height/2 + size/2 + 4 + "px");
+						.style("top", height/2 + size/2 + 45 + "px");
 
 
 				
@@ -1325,18 +1333,20 @@
 				var height = 480;
 				svg.attr("width", width).attr("height", height)//.style("border", "1px solid #ddd")
 
-				var button = div.append("button").text("Start").on("click", function(){
+				var button = div.select("#state-time-grid-anim-button").on("click", function(){
 					var me = d3.select(this);
 					if (reset) {
 						ca.reset();
 						t = 0;
 						reset = false;
-
+						me.text("Start");
 						timeGroups.each(function(a,b){
-							me.selectAll(".st-cells")
+							d3.select(this).selectAll(".st-cells")
 								.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
 								.attr("opacity", b <= t ? 1 : 0);
 						});
+						counterText.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
+
 					}
 					else {
 						me.classed("running", !me.classed("running"));
@@ -1384,9 +1394,9 @@
 					.enter().append("p")
 						.text(function(d,i){ return "t = " + i; })
 						.style("position", "absolute")
-						.style("right", "50px")
+						.style("right", "60px")
 						.style("font-size", "12px")
-						.style("top", function(d,i){ return 50 + (i * size) + 4 + "px"; })
+						.style("top", function(d,i){ return 92 + (i * size) + 4 + "px"; })
 						.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
 
 				
