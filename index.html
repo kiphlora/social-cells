@@ -77,19 +77,22 @@
 			</p> -->
 
 			<p>
-				Each cell determines its <span class="notes">next state (t+1)</span> by using information it has access to in its <span class="notes">current state (t)</span>. 
+				Each cell uses information available to it in the <span class="notes">current step</span> to calculate its state for the <span class="notes">next step</span>. 
 			</p>
 			<div>
 				
 			</div>
 				<p>
-					In order to better see and understand this discrete stepping concept, press the "Start" button in the interactive below to watch as the cells change their states each second.
+					In order to better see and understand this discrete stepping concept, press the "Start" button in the interactive below. The cells will transition to the next step each second for twenty seconds.
 				</p>
 				
 			</div>
 		
 		<div id="discrete-time-single-row" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="discrete-time-single-row-button" class="sc-button">Start</button>
+				<svg></svg>
+			</div>
 		</div>
 		
 		<div class="section">
@@ -102,7 +105,10 @@
 		</div>
 
 		<div id="state-time-grid-animated" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="state-time-grid-anim-button" class="sc-button">Start</button>
+				<svg></svg>
+			</div>
 		</div>
 
 		<div class="section">
@@ -147,7 +153,10 @@
 		</div>
 
 		<div id="changing-of-the-states" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="randomize-states" class="sc-button">Randomize States</button>
+				<svg></svg>
+			</div>
 		</div>
 	
 		<div class="section">
@@ -161,11 +170,11 @@
 						Changing the rules: 
 					</li>
 					<ul>
-						<li>Use the drop-down box to select a specific rule.</li>
+						<li>Use the Choose Rule drop-down box to select a specific rule.</li>
 						<li>Click the Randomize rule button.</li>
 					</ul>
 					<li>
-						Checking the Randomize Seeds checkbox will randomly select cells from the first row to be asleep or awake.
+						Toggle the Randomize Seeds button to randomly select cells to awaken (turn green). Note that the default is a single awakened (green) cell in the center of the first row. 
 					</li>
 					<li>
 						The Refresh button is used for re-running the CA simulation. This is most useful when the Randomize Seeds checkbox is selected, as this will generate new, random initial conditions.
@@ -179,15 +188,16 @@
 
 		<div id="ca-sandbox" class="interactive">
 			<div class="wrapper">
-				<svg></svg>
-				<!-- <div id="sandbox-controls"> -->
-					<div id="check-box"><label><input type="checkbox" id="init-state-checkbox">Randomize Seeds</label></div>
+				<div id="sandbox-controls">
+					<button id="random-rule-button" class="sc-button">Random Rule</button>
+					<button id="check-box-button-random-seeds">Randomize Seeds</button>
+					<button id="refresh-button" class="sc-button">Refresh</button>
 					<div id="select-box">
 						<label>Choose Rule</label>
-						<select name="rules" id="select-rule">
-						</select>
+						<select name="rules" id="select-rule"></select>
 					</div>
-				<!-- </div> -->
+				</div>
+				<svg></svg>
 			</div>
 		</div>
 
@@ -447,7 +457,7 @@
 				// 		.text("Rule: " + ca.rule())
 				// 		.attr("text-anchor", "middle")
 
-				var randomRuleButton = div.append("button").text("Random rule").on("click", function(){
+				var randomRuleButton = div.select("#random-rule-button").on("click", function(){
 					ca.reset();
 					ca.randomRule();
 					arrRule = ca.ruleComponents();
@@ -468,7 +478,7 @@
 
 				});
 
-				var refreshButton = div.append("button").text("Refresh").on("click", function(){
+				var refreshButton = div.select("#refresh-button").on("click", function(){
 					ca.reset();
 					
 					if (randomInit) ca.randomizeStates();
@@ -480,11 +490,12 @@
 								.attr("fill", function(a,b){ return fillColors[a]; })
 								.attr("stroke", function(a,b){ return stateColors[a]; })
 					});
-				})
+				});
 
-				var randomStart = div.select("#init-state-checkbox");
-				randomStart.property("checked", "");
-				randomStart.on("change", function(){
+				var randomStart = div.select("#check-box-button-random-seeds");
+				randomStart.classed("random-seeds-checked", false);
+				randomStart.on("click", function(){
+					d3.select(this).classed("random-seeds-checked", !d3.select(this).classed("random-seeds-checked"));
 					randomInit = !randomInit;
 
 					ca.reset();
@@ -526,6 +537,24 @@
 						.rule(mainrule)
 						.randomizeStates();
 
+				var button = div.select("#randomize-states").on("click", function(){
+					ca.reset();
+					ca.randomizeStates();
+
+					cells
+						.data(ca.currentCellStates())
+						.each(function(d,i){
+							d3.select(this).select("image").attr("xlink:href", images[d]);
+						});
+
+					nextcells.style("opacity", 0);
+					cells.selectAll("rect").style("opacity", 0);
+					socsits.selectAll("rect").style("opacity", 0);
+
+					nextcells
+						.data(ca.run().currentCellStates())
+							.attr("xlink:href", function(d,i){ return images[d]; });
+				});
 
 				var xscale = d3.scale.ordinal()
 						.domain(d3.range(ca.numCells()))
@@ -940,7 +969,7 @@
 							.attr("height", size)
 							.attr("xlink:href", function(d,i){ return images[d]; });
 
-				var button = div.append("button").text("Start").on("click", function(){
+				var button = div.select("#discrete-time-single-row-button").on("click", function(){
 					var me = d3.select(this);
 					if (reset) {
 						ca.reset();
@@ -959,9 +988,9 @@
 
 				var counterText = div.append("p").text("t = 0")
 						.style("position", "absolute")
-						.style("right", "50px")
+						.style("right", "60px")
 						.style("font-size", "12px")
-						.style("top", height/2 + size/2 + 4 + "px");
+						.style("top", height/2 + size/2 + 45 + "px");
 
 
 				
@@ -1330,18 +1359,20 @@
 				var height = 480;
 				svg.attr("width", width).attr("height", height)//.style("border", "1px solid #ddd")
 
-				var button = div.append("button").text("Start").on("click", function(){
+				var button = div.select("#state-time-grid-anim-button").on("click", function(){
 					var me = d3.select(this);
 					if (reset) {
 						ca.reset();
 						t = 0;
 						reset = false;
-
+						me.text("Start");
 						timeGroups.each(function(a,b){
-							me.selectAll(".st-cells")
+							d3.select(this).selectAll(".st-cells")
 								.attr("xlink:href", function(d,i){ return b === t ? images[d] : ghostImages[d]; })
 								.attr("opacity", b <= t ? 1 : 0);
 						});
+						counterText.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
+
 					}
 					else {
 						me.classed("running", !me.classed("running"));
@@ -1389,9 +1420,9 @@
 					.enter().append("p")
 						.text(function(d,i){ return "t = " + i; })
 						.style("position", "absolute")
-						.style("right", "50px")
+						.style("right", "60px")
 						.style("font-size", "12px")
-						.style("top", function(d,i){ return 50 + (i * size) + 4 + "px"; })
+						.style("top", function(d,i){ return 92 + (i * size) + 4 + "px"; })
 						.style("opacity", function(d,i){ return i <= t ? 1 : 0; });
 
 				
