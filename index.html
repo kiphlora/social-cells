@@ -153,7 +153,10 @@
 		</div>
 
 		<div id="changing-of-the-states" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="randomize-states" class="sc-button">Randomize States</button>
+				<svg></svg>
+			</div>
 		</div>
 	
 		<div class="section">
@@ -167,11 +170,11 @@
 						Changing the rules: 
 					</li>
 					<ul>
-						<li>Use the drop-down box to select a specific rule.</li>
+						<li>Use the Choose Rule drop-down box to select a specific rule.</li>
 						<li>Click the Randomize rule button.</li>
 					</ul>
 					<li>
-						Checking the Randomize Seeds checkbox will randomly select cells from the first row to be asleep or awake.
+						Toggle the Randomize Seeds button to randomly select cells to awaken (turn green). Note that the default is a single awakened (green) cell in the center of the first row. 
 					</li>
 					<li>
 						The Refresh button is used for re-running the CA simulation. This is most useful when the Randomize Seeds checkbox is selected, as this will generate new, random initial conditions.
@@ -817,6 +820,24 @@
 						.rule(mainrule)
 						// .randomizeStates();
 
+				var button = div.select("#randomize-states").on("click", function(){
+					ca.reset();
+					ca.randomizeStates();
+
+					cells
+						.data(ca.currentCellStates())
+						.each(function(d,i){
+							d3.select(this).select("image").attr("xlink:href", images[d]);
+						});
+
+					nextcells.style("opacity", 0);
+					cells.selectAll("rect").style("opacity", 0);
+					socsits.selectAll("rect").style("opacity", 0);
+
+					nextcells
+						.data(ca.run().currentCellStates())
+							.attr("xlink:href", function(d,i){ return images[d]; });
+				});
 
 				var xscale = d3.scale.ordinal()
 						.domain(d3.range(ca.numCells()))
