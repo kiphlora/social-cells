@@ -263,10 +263,10 @@ h3 {
 	color: #333;
 }
 
-#check-box-button-random-seeds:hover:not(.random-seeds-checked) {
+/*#check-box-button-random-seeds:hover:not(.random-seeds-checked) {
 	background-color: #888;
 	color: #fff;
-}
+}*/
 
 #check-box-button-random-seeds:active {
 }
