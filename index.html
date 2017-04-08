@@ -153,7 +153,10 @@
 		</div>
 
 		<div id="changing-of-the-states" class="interactive">
-			<div class="wrapper"><svg></svg></div>
+			<div class="wrapper">
+				<button id="randomize-states" class="sc-button">Randomize States</button>
+				<svg></svg>
+			</div>
 		</div>
 	
 		<div class="section">
@@ -534,6 +537,24 @@
 						.rule(mainrule)
 						.randomizeStates();
 
+				var button = div.select("#randomize-states").on("click", function(){
+					ca.reset();
+					ca.randomizeStates();
+
+					cells
+						.data(ca.currentCellStates())
+						.each(function(d,i){
+							d3.select(this).select("image").attr("xlink:href", images[d]);
+						});
+
+					nextcells.style("opacity", 0);
+					cells.selectAll("rect").style("opacity", 0);
+					socsits.selectAll("rect").style("opacity", 0);
+
+					nextcells
+						.data(ca.run().currentCellStates())
+							.attr("xlink:href", function(d,i){ return images[d]; });
+				});
 
 				var xscale = d3.scale.ordinal()
 						.domain(d3.range(ca.numCells()))
