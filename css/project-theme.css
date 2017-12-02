@@ -1,0 +1,224 @@
+html, body {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	height: calc(100vh);
+}
+
+body {
+	
+}
+
+.container {
+	min-height:100%;
+  position:relative;
+}
+
+
+.hero-header {
+	/*-webkit-clip-path: polygon(0 0, 100% 0, 100% 45%, 0 100%);*/
+  /*clip-path:         polygon(0 0, 100% 0, 100% 45%, 0 100%);*/
+
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
+
+	min-width: 960px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	/* Standard syntax (must be last) */
+	/*background: linear-gradient(#352117, #4E2E28); */
+	background: linear-gradient(#0033ff, #0099ff);
+  /*background-color: #ff6600;*/
+  height: 140px;
+  color: white;
+}
+
+.my-name {
+	float: left;
+	padding: 30px;
+	font-size: 3.5em;
+	font-family: "Dosis", Helvetica;
+	text-shadow: 0 1px 0 color;
+
+}
+
+.nav {
+	position: relative;
+	/*float: right;*/
+	font-family: "Dosis", Helvetica;
+	/*padding: 15px;*/
+	/*padding-right: 30px;*/
+	/*border: 1px solid black;*/
+
+}
+
+a {
+	outline: none;
+}
+.nav i {
+	padding: 25px;
+	font-size: 2em;
+}
+
+.nav i:hover {
+	text-decoration: underline;
+}
+
+.nav div {
+	padding: 5px;
+}
+
+.nav a {
+	text-decoration: none;
+	color: white;
+}
+
+.hero-footer {
+	/*position:absolute;*/
+  /*bottom:-350px;*/
+  /*margin-top: 350px;*/
+  min-width: 960px;
+	width: 100%;
+	font-family: "Dosis", Helvetica;
+	/*-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 75% 100%);*/
+	/*clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);*/
+	/* Standard syntax (must be last) */
+	/*background: linear-gradient(#4E2E28, #352117); */
+	background: linear-gradient(#0099ff, #0033ff);
+	-webkit-clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+	clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+  /*background-color: #ff6600;*/
+  height: 150px;
+  color: white;
+}
+
+.hero-footer i {
+	margin-left: -5px;
+	padding-right: 5px;
+}
+
+.footer-info {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+	padding-top: 90px;
+	color: white;
+}
+
+.footer-info a {
+	color: white;
+	text-decoration: none;
+}
+
+.footer-info div {
+	padding: 5px;
+	padding-bottom: 0;
+	margin: 0;
+}
+
+.hero-content-wrapper {
+	width: 100%;
+	/* min-height calculation: 350px for the footer height; 140px for the header height */
+	min-height: calc(100vh - 150px - 140px);
+	margin: 0 auto;
+}
+
+.item {
+	margin: 0;
+	padding: 15px;
+	padding-bottom: 5px;
+	line-height: 1.5em;
+	margin-bottom: 5px;
+	height: 130px;
+}
+
+.item a {
+	text-decoration: none;
+}
+
+.item a:hover {
+	text-decoration: underline;
+}
+
+.item p {
+	margin: 0;
+	padding: 0;
+	color: #555;
+	font-size: 18px;
+	font-family: "PT Serif", serif;
+}
+
+.preview {
+	margin: 0;
+	padding: 0;
+  object-fit: cover;
+  width: 440px;
+  height: 95px;
+  border: 1px solid #bbb;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.about-nav, .portfolio-nav {
+	border: 1px solid transparent;
+	text-align: center;
+}
+
+.active-link {
+	border: 1px dashed white;
+	
+}
+
+.intro-content a {
+	outline: 0;
+	color: #999;
+
+}
+
+.intro-content {
+	font-size: 20px;
+	font-weight: 100;
+	line-height: 30px;
+}
+
+.intro-content p {
+	overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+a:hover, a:active, a:focus {
+  /* styling for any way a link is about to be used */
+}
+
+.intro-content .notes {
+	/*color: #ff9900;*/
+	/*color: #9900fe;*/
+	/*color: #48c448;*/
+	color: #ff3800;
+}
+
+.intro-content h3 {
+	color: #999;
+	font-weight: 500;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+
+
+a:active {
+	color: #999;
+}
+
+iframe {
+	width: 960px;
+	height: 300px;
+	overflow: hidden;
+	border: 1px solid #999;
+	/*margin-bottom: 100px;*/
+}
